@@ -37,20 +37,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="379dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="209dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="#5DABB0"
         android:text="@string/SignUp"
         app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ForgotText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <Button
         android:id="@+id/buttonPatient"
@@ -58,7 +59,6 @@
         android:layout_height="61dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="364dp"
 
         android:backgroundTint="#FAFFFF"
         android:text="@string/Patient"
@@ -66,10 +66,12 @@
         android:textSize="20sp"
         app:cornerRadius="50dp"
         app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCaregiver"
+        app:layout_constraintVertical_bias="0.274"
         app:strokeColor="#5DABB0"
         app:strokeWidth="1dp" />
 
@@ -78,19 +80,19 @@
         android:layout_width="376dp"
         android:layout_height="61dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="452dp"
+        android:layout_marginTop="116dp"
 
+        android:layout_marginEnd="16dp"
         android:backgroundTint="#FAFFFF"
         android:text="@string/Caregiver"
         android:textColor="#000000"
         android:textSize="20sp"
         app:cornerRadius="50dp"
         app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SignUpText"
         app:strokeColor="#5DABB0"
         app:strokeWidth="1dp" />
 
@@ -106,6 +108,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Forgot your password?" />
 
