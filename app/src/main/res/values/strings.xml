@@ -13,6 +13,7 @@
     <string name="SignUp">Sign up</string>
     <string name="Patient">Patient</string>
     <string name="Caregiver">Caregiver</string>
+    <string name="LogOut">Log Out</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
