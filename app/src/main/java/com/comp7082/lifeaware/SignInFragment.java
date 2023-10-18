@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
  * Use the {@link SignInFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignInFragment extends Fragment implements View.OnClickListener {
+public class SignInFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,8 +89,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
 
                 String email        = emailEdit.getText().toString();
                 String password     = passwordEdit.getText().toString();
-                Log.d("this is the email", email);
-                Log.d("this is the password", password);
+
                 mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -98,7 +97,7 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
                             getActivity().finish();
                         }else {
                             //display some message here
-                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Sign In Failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -106,9 +105,5 @@ public class SignInFragment extends Fragment implements View.OnClickListener {
         });
 
         return view;
-    }
-
-    @Override
-    public void onClick(View view) {
     }
 }
