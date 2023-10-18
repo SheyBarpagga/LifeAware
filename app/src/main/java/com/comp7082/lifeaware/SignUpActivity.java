@@ -33,7 +33,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        signUp = (Button) findViewById(R.id.buttonNext);
+        signUp = (Button) findViewById(R.id.buttonSignUp);
         signUp.setOnClickListener(this);
         Log.d("before intent", "why are you here");
 
