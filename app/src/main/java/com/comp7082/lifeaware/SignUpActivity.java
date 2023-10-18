@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.comp7082.lifeaware.databinding.ActivityMainBinding;
+import com.comp7082.lifeaware.databinding.ActivitySignUpBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,18 +28,28 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
+    ActivitySignUpBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
-        Button signUp;
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        replaceFragment(new SignUpFragment());
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
-        signUp = (Button) findViewById(R.id.buttonSignUp);
-        signUp.setOnClickListener(this);
-        Log.d("before intent", "why are you here");
-
+            switch(item.getItemId()) {
+                case R.id.profile:
+                    replaceFragment(new SignUpFragment());
+                    break;
+                case R.id.home:
+                    replaceFragment(new SignInFragment());
+                    break;
+            }
+            return true;
+        });
     }
 
     private void replaceFragment(Fragment fragment) {

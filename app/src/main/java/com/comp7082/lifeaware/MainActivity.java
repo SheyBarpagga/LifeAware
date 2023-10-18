@@ -24,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseUser user;
-
-
-
     ActivityMainBinding binding;
 
     @Override
@@ -50,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new MainFragment());
                     break;
             }
-
             return true;
         });
 
