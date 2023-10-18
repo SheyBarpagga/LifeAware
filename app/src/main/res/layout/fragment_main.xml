@@ -78,6 +78,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
+    <Button
+        android:id="@+id/LogoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="308dp"
+        android:background="@drawable/transparent_selector"
+        android:padding="0dp"
+        android:text="@string/LogOut"
+        android:textColor="#F3F3F3"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/user_age"
         android:layout_width="wrap_content"

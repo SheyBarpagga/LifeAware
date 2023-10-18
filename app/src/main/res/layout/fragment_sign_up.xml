@@ -22,9 +22,80 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="379dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/gray_border"
+        android:ems="10"
+        android:inputType="text"
+        android:padding="10dp"
+        android:text="@string/Name"
+        android:textColor="#878787"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/emailAddressText"
+        android:layout_width="379dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="488dp"
+        android:background="@drawable/gray_border"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:text="@string/Email"
+        android:textColor="#878787"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="379dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="404dp"
+        android:background="@drawable/gray_border"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:text="@string/Password"
+        android:textColor="#878787"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/ageText"
+        android:layout_width="379dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="324dp"
+        android:background="@drawable/gray_border"
+        android:ems="10"
+        android:inputType="numberDecimal"
+        android:padding="10dp"
+        android:text="@string/Age"
+        android:textColor="#878787"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/LogoutButton"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
@@ -37,6 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="379dp"
@@ -45,54 +117,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="209dp"
         android:backgroundTint="#5DABB0"
-        android:text="@string/SignUp"
+        android:text="@string/NextButton"
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Button
-        android:id="@+id/buttonPatient"
-        android:layout_width="376dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="364dp"
-
-        android:backgroundTint="#FAFFFF"
-        android:text="@string/Patient"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp" />
-
-    <Button
-        android:id="@+id/buttonCaregiver"
-        android:layout_width="376dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="452dp"
-
-        android:backgroundTint="#FAFFFF"
-        android:text="@string/Caregiver"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp" />
 
     <TextView
         android:id="@+id/ForgotText"

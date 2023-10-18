@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
+
     <TextView
-        android:id="@+id/SignUpText"
+        android:id="@+id/LogoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="sans-serif"
-        android:text="@string/SignUpHeader"
+        android:text="@string/LoginHeader"
         android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -22,77 +23,72 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="379dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="460dp"
+        android:background="@drawable/gray_border"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:padding="10dp"
+        android:text="@string/Password"
+        android:textColor="#878787"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/emailAddressText"
+        android:layout_width="379dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="544dp"
+        android:background="@drawable/gray_border"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:text="@string/Email"
+        android:textColor="#878787"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/LogoutButton"
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/transparent_selector"
         android:padding="0dp"
-        android:text="@string/Login"
+        android:text="@string/SignUp"
         android:textColor="#5DABB0"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
+
     <Button
-        android:id="@+id/buttonSignUp"
+        android:id="@+id/buttonSignIn"
         android:layout_width="379dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="209dp"
         android:backgroundTint="#5DABB0"
-        android:text="@string/SignUp"
+        android:text="@string/NextButton"
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Button
-        android:id="@+id/buttonPatient"
-        android:layout_width="376dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="364dp"
-
-        android:backgroundTint="#FAFFFF"
-        android:text="@string/Patient"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp" />
-
-    <Button
-        android:id="@+id/buttonCaregiver"
-        android:layout_width="376dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="452dp"
-
-        android:backgroundTint="#FAFFFF"
-        android:text="@string/Caregiver"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp" />
 
     <TextView
         android:id="@+id/ForgotText"
