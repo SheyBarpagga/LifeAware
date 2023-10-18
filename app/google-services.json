@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "53516232120",
+    "project_id": "lifeaware-d26f5",
+    "storage_bucket": "lifeaware-d26f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53516232120:android:0b8c8c9e3e2693f5269b4d",
+        "android_client_info": {
+          "package_name": "com.comp7082.lifeaware"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO7XBh11RMBoL93OnMqs_LNyZuUXdVGS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
