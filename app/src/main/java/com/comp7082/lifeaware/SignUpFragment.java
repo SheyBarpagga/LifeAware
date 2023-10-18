@@ -30,7 +30,7 @@ import java.util.concurrent.Executor;
  * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignUpFragment extends Fragment implements View.OnClickListener {
+public class SignUpFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -106,10 +106,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 String email        = emailEdit.getText().toString();
                 String password     = passwordEdit.getText().toString();
                 String age          = ageEdit.getText().toString();
-                Log.d("this is the email", email);
-                Log.d("this is the name", name);
-                Log.d("this is the password", password);
-                Log.d("this is the age", age);
+
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -124,7 +121,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                             getActivity().finish();
                         }else {
                             //display some message here
-                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Sign Up failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -133,48 +130,4 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    @Override
-    public void onClick(View view) {
-//        FirebaseAuth mAuth;
-//        FirebaseDatabase database;
-//
-//        mAuth = FirebaseAuth.getInstance();
-//        database = FirebaseDatabase.getInstance();
-//
-////        EditText nameEdit;
-////        EditText emailEdit;
-////        EditText passwordEdit;
-////        EditText ageEdit;
-//
-//        nameEdit        = (EditText) view.findViewById((R.id.nameText));
-//        emailEdit       = (EditText) view.findViewById((R.id.emailAddressText));
-//        passwordEdit    = (EditText) view.findViewById((R.id.passwordText));
-//        ageEdit         = (EditText) view.findViewById((R.id.ageText));
-//
-//        mAuth.createUserWithEmailAndPassword(emailEdit.getText().toString(), passwordEdit.getText().toString())
-//                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "createUserWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            DatabaseReference myRef = database.getReference(user.getUid());
-//
-//                            myRef.child("id").setValue(user.getUid());
-//                            myRef.child("name").setValue(nameEdit.getText().toString());
-//                            myRef.child("age").setValue(ageEdit.getText().toString());
-//
-//                            getActivity().finish();
-////                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-////                            Toast.makeText(getActivity(),"Toast your message" ,Toast.LENGTH_SHORT).show();
-////                            updateUI(null);
-//                        }
-//                    }
-//                });
-    }
 }

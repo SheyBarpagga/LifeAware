@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseUser user;
     ActivityMainBinding binding;
+    FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (mAuth.getCurrentUser() == null) {
+                    Intent signUpScreen = new Intent(MainActivity.this, SignUpActivity.class);
+                    startActivity(signUpScreen);
+                }
+            }
+        });
 
-//        Log.d("after intent", "why are you here");
-        if (mAuth.getCurrentUser() == null)
-        {
-            Intent aboutScreen = new Intent(MainActivity.this, SignUpActivity.class);
-            this.startActivity(aboutScreen);
-        }
 //        user = mAuth.getCurrentUser();
 ////        Log.d("after intent 22222", "why are you here 222");
 //
