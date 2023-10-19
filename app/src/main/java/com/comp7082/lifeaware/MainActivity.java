@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new ProfileFragment());
                     break;
                 case R.id.home:
-                    mAuth.signOut();
                     replaceFragment(new MainFragment());
                     break;
             }
