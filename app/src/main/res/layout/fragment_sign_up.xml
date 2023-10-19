@@ -19,7 +19,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/login_button"
         app:layout_constraintStart_toEndOf="@+id/closeButton"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
