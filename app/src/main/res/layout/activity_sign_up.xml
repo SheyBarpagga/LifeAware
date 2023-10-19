@@ -25,13 +25,11 @@
       app:layout_constraintVertical_bias="0.21"
       tools:visibility="visible" />
 
+
   <EditText
       android:id="@+id/nameText"
       android:layout_width="379dp"
       android:layout_height="49dp"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="120dp"
-      android:layout_marginEnd="16dp"
       android:layout_marginBottom="32dp"
       android:background="@drawable/gray_border"
       android:ems="10"
@@ -40,12 +38,8 @@
       android:text="@string/Name"
       android:textColor="#878787"
       app:layout_constraintBottom_toTopOf="@+id/emailAddressText"
-=======
-  <FrameLayout
-      android:id="@+id/frame_layout"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
 
 
   <EditText
@@ -89,20 +83,18 @@
       android:layout_width="379dp"
       android:layout_height="49dp"
       android:layout_marginStart="16dp"
+      android:layout_marginTop="32dp"
       android:layout_marginEnd="16dp"
-      android:layout_marginBottom="324dp"
       android:background="@drawable/gray_border"
       android:ems="10"
       android:inputType="numberDecimal"
       android:padding="10dp"
       android:text="@string/Age"
       android:textColor="#878787"
-      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/passwordText"
-      app:layout_constraintVertical_bias="0.885" />
+      app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
   <Button
       android:id="@+id/LogoutButton"
@@ -137,33 +129,5 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/ageText"
       app:layout_constraintVertical_bias="0.724" />
-
-  <TextView
-      android:id="@+id/ForgotText"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="124dp"
-      android:layout_marginEnd="124dp"
-      android:layout_marginBottom="172dp"
-      android:text="@string/ForgotPassword"
-      android:textColor="#5DABB0"
-      android:textSize="16sp"
-  </FrameLayout>
-
-  <com.google.android.material.bottomnavigation.BottomNavigationView
-      android:id="@+id/bottomNavigationView"
-      android:layout_width="416dp"
-      android:layout_height="91dp"
-      app:elevation="10dp"
-      app:itemIconTint="#5DABB0"
-      app:itemTextColor="#5DABB0"
-
-
-      app:layout_constraintTop_toBottomOf="@+id/buttonSignUp"
-      app:layout_constraintVertical_bias="0.903"
-      tools:text="Forgot your password?" />
-
-      app:menu="@menu/nav_bar"
-      />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
