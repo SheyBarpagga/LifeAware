@@ -29,16 +29,16 @@
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="460dp"
+        android:layout_marginBottom="180dp"
         android:background="@drawable/gray_border"
         android:ems="10"
         android:inputType="textPassword"
         android:padding="10dp"
         android:text="@string/Password"
         android:textColor="#878787"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSignIn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -47,17 +47,19 @@
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="544dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/gray_border"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:text="@string/Email"
         android:textColor="#878787"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LogoutButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/button"
@@ -74,20 +76,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
-
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="379dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="209dp"
+        android:layout_marginBottom="24dp"
         android:backgroundTint="#5DABB0"
         android:text="@string/NextButton"
         app:iconTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/ForgotText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
