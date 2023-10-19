@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.comp7082.lifeaware.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -47,6 +50,8 @@ public class SignUpFragment extends Fragment {
     EditText ageEdit;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+
+    ActivityMainBinding binding;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -92,7 +97,14 @@ public class SignUpFragment extends Fragment {
         signUpButton = (Button) view.findViewById(R.id.buttonSignUp);
 
 
+        Button loginButton = (Button) view.findViewById(R.id.login_button);
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replaceFragment(new SignInFragment());
+            }
+        });
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +140,12 @@ public class SignUpFragment extends Fragment {
             }
         });
         return view;
+    }
+    private void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.commit();
     }
 
 }

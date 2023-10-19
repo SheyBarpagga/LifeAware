@@ -19,7 +19,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/button"
+        app:layout_constraintEnd_toStartOf="@+id/login_button"
         app:layout_constraintStart_toEndOf="@+id/closeButton"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
@@ -35,7 +35,7 @@
         android:ems="10"
         android:inputType="text"
         android:padding="10dp"
-        android:text="@string/Name"
+        android:hint="Enter name"
         android:textColor="#878787"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -53,7 +53,7 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:padding="10dp"
-        android:text="@string/Email"
+        android:hint="Enter email"
         android:textColor="#878787"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -71,7 +71,7 @@
         android:ems="10"
         android:inputType="textPassword"
         android:padding="10dp"
-        android:text="@string/Password"
+        android:hint="Enter password"
         android:textColor="#878787"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -89,7 +89,7 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:padding="10dp"
-        android:text="@string/Age"
+        android:hint="Enter your age"
         android:textColor="#878787"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordText" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
