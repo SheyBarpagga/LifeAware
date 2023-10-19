@@ -89,7 +89,7 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:padding="10dp"
-        android:hint="Enter your name"
+        android:hint="Enter your age"
         android:textColor="#878787"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
