@@ -1,14 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CaregiverHomeFragment">
+    tools:context=".MainActivity">
 
-    <!-- TODO: Update blank fragment layout -->
+    <View
+        android:id="@+id/view"
+        android:layout_width="410dp"
+        android:layout_height="223dp"
+        android:background="#5DABB0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/home_text"
+        android:layout_width="116dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:text="Home"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="149dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_text"
+        app:srcCompat="@drawable/circle" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="125dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/patient_name"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+
+    <Button
+        android:id="@+id/LogoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="308dp"
+        android:backgroundTint="#5DABB0"
+        android:fontFamily="sans-serif"
+        android:padding="0dp"
+        android:text="@string/LogOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/patinet1"
+        android:layout_width="274dp"
+        android:layout_height="48dp"
+
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FAFFFF"
+        android:text="Patinet 1"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:cornerRadius="50dp"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#5DABB0"
+        app:strokeWidth="1dp"
+        tools:layout_editor_absoluteY="336dp" />
+
+    <Button
+        android:id="@+id/patinet2"
+        android:layout_width="274dp"
+        android:layout_height="48dp"
+
+
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FAFFFF"
+        android:text="Patient 2"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:cornerRadius="50dp"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#5DABB0"
+        app:strokeWidth="1dp"
+        tools:layout_editor_absoluteY="394dp" />
+
+    <Button
+        android:id="@+id/patinet3"
+        android:layout_width="274dp"
+        android:layout_height="48dp"
+
+
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FAFFFF"
+        android:text="Patinet 3"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:cornerRadius="50dp"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#5DABB0"
+        app:strokeWidth="1dp"
+        tools:layout_editor_absoluteY="457dp" />
+
+    <Button
+        android:id="@+id/addPatient"
+        android:layout_width="117dp"
+        android:layout_height="39dp"
+
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#FAFFFF"
+        android:text="Add Patient"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:cornerRadius="50dp"
+        app:iconTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#5DABB0"
+        app:strokeWidth="1dp"
+        tools:layout_editor_absoluteY="513dp" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
