@@ -25,7 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
 
+import java.util.Arrays;
 import java.util.concurrent.Executor;
 
 /**
@@ -43,6 +45,8 @@ public class SignUpFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private Boolean isCaretaker;
 
     EditText nameEdit;
     EditText emailEdit;
@@ -94,22 +98,33 @@ public class SignUpFragment extends Fragment {
         Button signUpButton;
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_sign_up, container, false);
-        signUpButton = (Button) view.findViewById(R.id.buttonSignUp);
 
-
-        Button loginButton = (Button) view.findViewById(R.id.login_button);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        SingleSelectToggleGroup single = (SingleSelectToggleGroup) view.findViewById(R.id.group_choices);
+        single.setOnCheckedChangeListener(new SingleSelectToggleGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                replaceFragment(new SignInFragment());
+            public void onCheckedChanged(SingleSelectToggleGroup group, int checkedId) {
+                Log.d(TAG, "onCheckedChanged(): checkedId = " + checkedId);
+                if (checkedId == 2131230730)
+                {
+                    isCaretaker = false;
+                }
+                if (checkedId == 2131230724)
+                {
+                    isCaretaker = true;
+                }
             }
         });
+
+
+
+        signUpButton = (Button) view.findViewById(R.id.buttonSignUp);
+
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nameEdit   = (EditText) view.findViewById((R.id.nameText));
+                Log.d(TAG, String.valueOf(isCaretaker));
+                nameEdit        = (EditText) view.findViewById((R.id.nameText));
                 emailEdit       = (EditText) view.findViewById((R.id.emailAddressText));
                 passwordEdit    = (EditText) view.findViewById((R.id.passwordText));
                 ageEdit         = (EditText) view.findViewById((R.id.ageText));
@@ -129,6 +144,7 @@ public class SignUpFragment extends Fragment {
                             myRef.child("id").setValue(user.getUid());
                             myRef.child("name").setValue(name);
                             myRef.child("age").setValue(age);
+                            myRef.child("isCaretaker").setValue(isCaretaker);
 
                             getActivity().finish();
                         }else {
