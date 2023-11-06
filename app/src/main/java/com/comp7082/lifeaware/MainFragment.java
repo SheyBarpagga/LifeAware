@@ -1,10 +1,12 @@
 package com.comp7082.lifeaware;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.os.Build;
+import android.widget.ImageView;
+import androidx.core.app.NotificationCompat;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MainFragment#newInstance} factory method to
@@ -30,6 +40,8 @@ public class MainFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final String CHANNEL_ID = "assistance_notification_channel";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -67,20 +79,72 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view;
-        view = inflater.inflate(R.layout.fragment_main, container, false);
-        Button logoutButton = (Button) view.findViewById(R.id.LogoutButton);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                mAuth.signOut();
-            }
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        Button logoutButton = view.findViewById(R.id.LogoutButton);
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.signOut();
         });
 
-        // Inflate the layout for this fragment
+        ImageView assistanceButton = view.findViewById(R.id.imageView3);
+        assistanceButton.setOnClickListener(v -> confirmAssistanceRequest());
+
         return view;
     }
+
+    private void confirmAssistanceRequest() {
+        sendNotificationWithDelay();
+        new AlertDialog.Builder(getContext())
+                .setTitle(getString(R.string.confirm_request))
+                .setMessage(getString(R.string.confirm_request_detail))
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+                    // User confirmed to send the notification
+                    sendNotification();
+                })
+                .setNegativeButton(getString(R.string.no), (dialog, which) -> {
+                    // User cancelled the request
+                    Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
+                })
+                .show();
+    }
+
+    private void sendNotificationWithDelay() {
+        // Set a delay before sending the notification (if necessary)
+        new Handler().postDelayed(this::sendNotification, 5000); // 5 second delay
+    }
+
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
+            String description = getString(R.string.Help); // Define this in strings.xml
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void sendNotification() {
+        // Show a success message before sending the notification
+        Toast.makeText(getContext(), getString(R.string.notification_sent), Toast.LENGTH_LONG).show();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_health_and_safety_24) // add icon later
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_message))
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Ensure the toast has time to display before the notification is sent and the activity state changes.
+        new Handler().postDelayed(() -> {
+            notificationManager.notify(1, builder.build());
+        }, Toast.LENGTH_LONG);
+    }
 }
+
