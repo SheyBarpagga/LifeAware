@@ -37,10 +37,10 @@ public class CaregiverActivity extends AppCompatActivity {
 
             switch(item.getItemId()) {
                 case R.id.profile:
-                    replaceFragment(new ProfileFragment());
+                    replaceFragment(new CaregiverProfileFragment());
                     break;
                 case R.id.home:
-                    replaceFragment(new MainFragment());
+                    replaceFragment(new CaregiverHomeFragment());
                     break;
             }
             return true;
