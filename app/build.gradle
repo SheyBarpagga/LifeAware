@@ -14,12 +14,14 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
         dataBinding = true
         viewBinding = true
     }
+
 
     buildTypes {
         release {
@@ -34,6 +36,7 @@ android {
 }
 
 dependencies {
+
 
     debugImplementation('androidx.test.espresso:espresso-core:3.4.0')
     debugImplementation('androidx.test:runner:1.4.0')
