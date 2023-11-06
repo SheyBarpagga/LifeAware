@@ -19,7 +19,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:layout_constraintEnd_toStartOf="@+id/login_button"
+
         app:layout_constraintStart_toEndOf="@+id/closeButton"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
@@ -146,7 +146,7 @@
         android:layout_marginTop="72dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#5DABB0"
-        android:text="@string/NextButton"
+        android:text="@string/SignUp"
         app:iconTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -163,13 +163,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ageText"
         app:layout_constraintVertical_bias="0.32"
-        app:tbgCheckedButton="@+id/Caretaker">
+        app:tbgCheckedButton="@+id/buttonCaregiver">
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
-            android:id="@+id/Caretaker"
+            android:id="@+id/buttonCaregiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Caretaker" />
+            android:text="@string/Caregiver" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
             android:id="@+id/Patient"
