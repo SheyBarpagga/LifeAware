@@ -1,9 +1,100 @@
 package com.comp7082.lifeaware;
 
-public class Caregiver {
-    private int id;
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Caregiver implements Serializable {
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
+    private FirebaseUser user;
+    private DatabaseReference myRef;
+    private String id;
     private String name;
     private String phoneNumber;
-    private int[] patientIds;
+    List<String> patientIds = new ArrayList<>();
+
+    public void setUp()
+    {
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        user = mAuth.getCurrentUser();
+        myRef = database.getReference(user.getUid());
+
+        setId(myRef.child("id").toString());
+        setName(myRef.child("name").toString());
+        myRef.child("patientIds").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    String patientId = postSnapshot.getValue().toString();
+                    patientIds.add(patientId);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId(String id)
+    {
+        this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber)
+    {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public List<String> getPatientIds()
+    {
+        return patientIds;
+    }
+
+    public void addPatientId(String patientId)
+    {
+        patientIds.add(patientId);
+        myRef.child("patientIds").setValue(patientIds);
+    }
+
+    public void setPatientIds(List<String> patientIds)
+    {
+        this.patientIds = patientIds;
+    }
+
 
 }
