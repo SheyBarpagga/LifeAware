@@ -24,6 +24,8 @@
     <string name="notification_message">Jane Smith requires assistance.</string>
     <string name="notification_sent">Notification sent successfully.</string>
     <string name="assistance_cancelled">Assistance request cancelled.</string>
+    <string name="patient_name">Name</string>
+    <string name="patient_age">age</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
