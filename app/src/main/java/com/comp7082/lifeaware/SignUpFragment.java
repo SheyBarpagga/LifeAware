@@ -104,11 +104,11 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onCheckedChanged(SingleSelectToggleGroup group, int checkedId) {
                 Log.d(TAG, "onCheckedChanged(): checkedId = " + checkedId);
-                if (checkedId == 2131230730)
+                if (checkedId ==  R.id.Patient)
                 {
                     isCaretaker = false;
                 }
-                if (checkedId == 2131230724)
+                if (checkedId == R.id.buttonCaregiver)
                 {
                     isCaretaker = true;
                 }
