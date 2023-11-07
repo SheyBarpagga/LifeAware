@@ -22,17 +22,20 @@ public class CaregiverActivity extends AppCompatActivity {
     private FirebaseUser user;
     ActivityMainBinding binding;
     FirebaseAuth.AuthStateListener mAuthListener;
+    Caregiver cg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FirebaseApp.initializeApp(this);
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        cg = new Caregiver();
 
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new MainFragment());
+        replaceFragment(new CaregiverHomeFragment());
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
@@ -60,6 +63,9 @@ public class CaregiverActivity extends AppCompatActivity {
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("caregiver", cg);
+        fragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
     }
