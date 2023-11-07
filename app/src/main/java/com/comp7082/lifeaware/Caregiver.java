@@ -35,8 +35,29 @@ public class Caregiver implements Serializable {
         user = mAuth.getCurrentUser();
         myRef = database.getReference(user.getUid());
 
-        setId(myRef.child("id").toString());
-        setName(myRef.child("name").toString());
+        myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String id = dataSnapshot.getValue(String.class);
+                setId(id);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        myRef.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                   String name = dataSnapshot.getValue(String.class);
+                   setName(name);
+               }
+
+               @Override
+               public void onCancelled(@NonNull DatabaseError error) {
+
+               }
+           });
         myRef.child("patientIds").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

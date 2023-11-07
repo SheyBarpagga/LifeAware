@@ -32,6 +32,9 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     private String mParam1;
     private String mParam2;
 
+    private List<Patient> patients;
+    private List<String> patientNames;
+
     public CaregiverHomeFragment() {
         // Required empty public constructor
     }
@@ -67,26 +70,38 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
-        List<String> list = new ArrayList<>();
-        list.add("test");
 
         Caregiver caregiver = new Caregiver();
-
-
+        getPatients(caregiver.getPatientIds());
 
         RecyclerView recyclerView = view.findViewById(R.id.patientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new PatientAdapter(view.getContext(), list);
+        adapter = new PatientAdapter(view.getContext(), patientNames);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
+
         return view;
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        PatientInfo frag = new PatientInfo();
+        Bundle bundle = new Bundle();
+        bundle.putString("name", adapter.getItem(position));
+        bundle.putString("age", patients.get(position).getAge());
+        bundle.putString("age", patients.get(position).getAge());
     }
 
+    private void getPatients(List<String> patientIDs) {
+        patients = new ArrayList<Patient>();
+        patientNames = new ArrayList<String>();
+        for(String patientID: patientIDs) {
+            Patient patient = new Patient(patientID);
+            patients.add(patient);
+            patientNames.add(patient.getName());
+        }
+    }
 
 }
