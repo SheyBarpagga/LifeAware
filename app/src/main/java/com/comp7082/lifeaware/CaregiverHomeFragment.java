@@ -70,6 +70,11 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
         List<String> list = new ArrayList<>();
         list.add("test");
+
+        Caregiver caregiver = new Caregiver();
+
+
+
         RecyclerView recyclerView = view.findViewById(R.id.patientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new PatientAdapter(view.getContext(), list);
@@ -82,4 +87,6 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     public void onItemClick(View view, int position) {
         //Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
+
+
 }

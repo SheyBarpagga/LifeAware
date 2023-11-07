@@ -24,6 +24,9 @@ public class Caregiver implements Serializable {
     private String phoneNumber;
     List<String> patientIds = new ArrayList<>();
 
+    public Caregiver() {
+        setUp();
+    }
     public void setUp()
     {
         database = FirebaseDatabase.getInstance();
