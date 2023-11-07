@@ -1,6 +1,7 @@
 package com.comp7082.lifeaware;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import android.app.NotificationChannel;
@@ -28,6 +33,8 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.ImageView;
 import androidx.core.app.NotificationCompat;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +48,8 @@ public class MainFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
     private static final String CHANNEL_ID = "assistance_notification_channel";
 
     // TODO: Rename and change types of parameters
@@ -81,6 +90,9 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         Button logoutButton = view.findViewById(R.id.LogoutButton);

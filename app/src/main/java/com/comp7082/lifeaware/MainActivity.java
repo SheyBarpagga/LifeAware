@@ -32,7 +32,20 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
+        DatabaseReference myRef = database.getReference(mAuth.getCurrentUser().getUid());
+        myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean caretaker = dataSnapshot.getValue(Boolean.class);
+                if (caretaker) {
+                    Intent intent = new Intent(MainActivity.this, CaregiverActivity.class);
+                    MainActivity.this.startActivity(intent);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
