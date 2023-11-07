@@ -73,85 +73,34 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/patinet1"
-        android:layout_width="274dp"
-        android:layout_height="48dp"
-
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#FAFFFF"
-        android:text="Patinet 1"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp"
-        tools:layout_editor_absoluteY="336dp" />
-
-    <Button
-        android:id="@+id/patinet2"
-        android:layout_width="274dp"
-        android:layout_height="48dp"
-
-
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#FAFFFF"
-        android:text="Patient 2"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp"
-        tools:layout_editor_absoluteY="394dp" />
-
-    <Button
-        android:id="@+id/patinet3"
-        android:layout_width="274dp"
-        android:layout_height="48dp"
-
-
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#FAFFFF"
-        android:text="Patinet 3"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:cornerRadius="50dp"
-        app:iconTint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.132"
-        app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp"
-        tools:layout_editor_absoluteY="457dp" />
-
-    <Button
         android:id="@+id/addPatient"
-        android:layout_width="117dp"
-        android:layout_height="39dp"
+        android:layout_width="170dp"
+        android:layout_height="57dp"
 
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#FAFFFF"
         android:text="Add Patient"
         android:textColor="#000000"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:cornerRadius="50dp"
         app:iconTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name"
         app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp"
-        tools:layout_editor_absoluteY="513dp" />
+        app:strokeWidth="1dp" />
 
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/patientList"
+        android:layout_width="0dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addPatient" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
