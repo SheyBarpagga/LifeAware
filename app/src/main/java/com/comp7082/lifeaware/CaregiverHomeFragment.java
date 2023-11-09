@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,8 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +125,11 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                 Toast.makeText(getActivity(), "You must enter their ID", Toast.LENGTH_SHORT).show();
             } else {
                 caregiver.addPatientId(givenId.getText().toString());
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference(givenId.getText().toString());
+                myRef.child("caregiver").setValue(mAuth.getCurrentUser().getUid());
+
                 Toast.makeText(getActivity(), "New patient added", Toast.LENGTH_SHORT).show();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.detach(this).attach(this).commit();

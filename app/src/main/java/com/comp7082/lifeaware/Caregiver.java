@@ -35,6 +35,7 @@ public class Caregiver implements Serializable {
 
         user = mAuth.getCurrentUser();
         myRef = database.getReference(user.getUid());
+        myRef.child("help").setValue("");
         CountDownLatch done = new CountDownLatch(3);
         myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -98,6 +98,9 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 //        new AsyncTask<Void, Void, Void>() {
@@ -146,6 +149,22 @@ public class MainFragment extends Fragment {
     }
 
     private void confirmAssistanceRequest() {
+
+        DatabaseReference myRef = database.getReference(mAuth.getCurrentUser().getUid());
+
+        myRef.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                myRef.child("help").setValue(name);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         sendNotificationWithDelay();
         new AlertDialog.Builder(getContext())
                 .setTitle(getString(R.string.confirm_request))
@@ -183,14 +202,21 @@ public class MainFragment extends Fragment {
         // Show a success message before sending the notification
         Toast.makeText(getContext(), getString(R.string.notification_sent), Toast.LENGTH_LONG).show();
 
+        CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
+        String description = getString(R.string.Help); // Define this in strings.xml
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        notificationManager.createNotificationChannel(channel);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_health_and_safety_24) // add icon later
                 .setContentTitle(getString(R.string.notification_title))
                 .setContentText(getString(R.string.notification_message))
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
+builder.setChannelId(CHANNEL_ID);
         // Ensure the toast has time to display before the notification is sent and the activity state changes.
         new Handler().postDelayed(() -> {
             notificationManager.notify(1, builder.build());

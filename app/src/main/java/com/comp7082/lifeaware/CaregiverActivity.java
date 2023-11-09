@@ -1,5 +1,9 @@
 package com.comp7082.lifeaware;
 
+import static android.app.PendingIntent.getActivity;
+
+import static androidx.test.InstrumentationRegistry.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -12,13 +16,17 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.comp7082.lifeaware.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class CaregiverActivity extends AppCompatActivity {
@@ -54,6 +62,26 @@ public class CaregiverActivity extends AppCompatActivity {
                     break;
             }
             return true;
+        });
+        database = FirebaseDatabase.getInstance();
+
+        database.getReference(mAuth.getCurrentUser().getUid()).child("help").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    String help = postSnapshot.getValue().toString();
+                    if(!help.equals("")) {
+                        CharSequence text = help + "needs help!";
+                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
 
         mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
