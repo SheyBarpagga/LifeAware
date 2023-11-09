@@ -100,23 +100,35 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground( final Void ... params ) {
-                // something you know that will take a few seconds
-                patient = new Patient();
-                return null;
-            }
-            @Override
-            protected void onPostExecute( final Void result ) {
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground( final Void ... params ) {
+//                // something you know that will take a few seconds
+//                patient = new Patient();
+//                return null;
+//            }
+//            @Override
+//            protected void onPostExecute( final Void result ) {
+//
+//                TextView name = view.findViewById(R.id.user_name);
+//                name.setText(patient.getName());
+//                TextView age = view.findViewById(R.id.user_age);
+//                age.setText(patient.getAge());
+//
+//            }
+//        }.execute();
 
-                TextView name = view.findViewById(R.id.user_name);
-                name.setText(patient.getName());
-                TextView age = view.findViewById(R.id.user_age);
-                age.setText(patient.getAge());
+        Bundle bundle = this.getArguments();
 
-            }
-        }.execute();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            patient = bundle.getSerializable("patient", Patient.class);
+        }
+
+
+        TextView name = view.findViewById(R.id.user_name);
+        name.setText(patient.getName());
+        TextView age = view.findViewById(R.id.user_age);
+        age.setText(patient.getAge());
 
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();

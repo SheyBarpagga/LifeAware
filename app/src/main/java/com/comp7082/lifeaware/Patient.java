@@ -12,9 +12,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.concurrent.CountDownLatch;
 
-public class Patient {
+public class Patient implements Serializable {
     private String id;
     private String name;
     private String age;
@@ -30,7 +31,7 @@ public class Patient {
         user = mAuth.getCurrentUser();
         myRef = database.getReference(id);
         CountDownLatch done = new CountDownLatch(3);
-        myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener()  {
              @Override
              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  String id = dataSnapshot.getValue(String.class);
@@ -41,7 +42,7 @@ public class Patient {
              public void onCancelled(@NonNull DatabaseError error) {
 
              }
-     });
+     }) ;
         myRef.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

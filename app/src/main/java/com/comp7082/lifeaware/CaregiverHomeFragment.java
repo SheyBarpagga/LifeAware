@@ -66,13 +66,10 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
 
         Bundle bundle = this.getArguments();
-        System.out.println(bundle);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             caregiver = bundle.getSerializable("caregiver", Caregiver.class);
         }
-        System.out.println(caregiver.getName() + " eg");
-
 
 //        new AsyncTask<Void, Void, Void>() {
 //            @Override

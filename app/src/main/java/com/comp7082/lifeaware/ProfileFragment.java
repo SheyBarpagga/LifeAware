@@ -65,6 +65,8 @@ public class ProfileFragment extends Fragment {
                 name.setText(patient.getName());
                 TextView age = view.findViewById(R.id.user_age);
                 age.setText(patient.getAge());
+                TextView pat_id = view.findViewById(R.id.patient_id);
+                pat_id.setText(patient.getId());
 
             }
         }.execute();
