@@ -2,6 +2,7 @@ package com.comp7082.lifeaware;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -23,8 +24,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
 
 import java.util.Arrays;
@@ -145,6 +149,19 @@ public class SignUpFragment extends Fragment {
                             myRef.child("name").setValue(name);
                             myRef.child("age").setValue(age);
                             myRef.child("isCaretaker").setValue(isCaretaker);
+                            myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Boolean caretaker = dataSnapshot.getValue(Boolean.class);
+                                    if (caretaker) {
+                                        Intent intent = new Intent(getActivity(), CaregiverActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
 
                             getActivity().finish();
                         }else {

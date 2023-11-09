@@ -1,17 +1,27 @@
 package com.comp7082.lifeaware;
 
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,64 +33,66 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
     PatientAdapter adapter;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private List<Patient> patients;
     private List<String> patientNames;
+
+    Caregiver caregiver;
+
+
 
     public CaregiverHomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CaregiverHomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CaregiverHomeFragment newInstance(String param1, String param2) {
         CaregiverHomeFragment fragment = new CaregiverHomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
 
-        Caregiver caregiver = new Caregiver();
-        getPatients(caregiver.getPatientIds());
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+                // something you know that will take a few seconds
+                caregiver = new Caregiver();
+                return null;
+            }
+            @Override
+            protected void onPostExecute( final Void result ) {
+                TextView name = view.findViewById(R.id.user_name);
+                name.setText(caregiver.getName());
 
-        RecyclerView recyclerView = view.findViewById(R.id.patientList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new PatientAdapter(view.getContext(), patientNames);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
+                System.out.println(caregiver.getName() + "gello");
+
+                getPatients(caregiver.getPatientIds());
+                RecyclerView recyclerView = view.findViewById(R.id.patientList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+                adapter = new PatientAdapter(view.getContext(), patientNames);
+                adapter.setClickListener(CaregiverHomeFragment.this);
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute();
+
+
+        Button logoutButton = view.findViewById(R.id.LogoutButton);
+        logoutButton.setOnClickListener(v -> {
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.signOut();
+        });
 
         return view;
     }
@@ -91,7 +103,14 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         Bundle bundle = new Bundle();
         bundle.putString("name", adapter.getItem(position));
         bundle.putString("age", patients.get(position).getAge());
-        bundle.putString("age", patients.get(position).getAge());
+        bundle.putString("notes", patients.get(position).getAge());
+        frag.setArguments(bundle);
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, frag);
+        fragmentTransaction.commit();
+
     }
 
     private void getPatients(List<String> patientIDs) {
@@ -102,6 +121,56 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
             patients.add(patient);
             patientNames.add(patient.getName());
         }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //addFields(view);
+
+    }
+
+//    private void setData(View view) {
+//        ExecutorService executor = Executors.newFixedThreadPool(2);
+//        Runnable createCare = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                System.out.println("done");
+//            }
+//        };
+//
+//        Runnable setFields = new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        };
+//        executor.(createCare);
+//        executor.execute(setFields);
+//        executor.shutdown();
+//    }
+
+
+    private synchronized void addFields(View view) {
+        while (caregiver == null) {
+            try{
+                wait();
+            }catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+        TextView name = view.findViewById(R.id.user_name);
+        name.setText(caregiver.getName());
+
+        System.out.println(caregiver.getName() + "gello");
+
+        getPatients(caregiver.getPatientIds());
+        RecyclerView recyclerView = view.findViewById(R.id.patientList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        adapter = new PatientAdapter(view.getContext(), patientNames);
+        adapter.setClickListener(CaregiverHomeFragment.this);
+        recyclerView.setAdapter(adapter);
     }
 
 }

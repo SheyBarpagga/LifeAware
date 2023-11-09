@@ -51,6 +51,7 @@ public class Caregiver implements Serializable {
                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                    String name = dataSnapshot.getValue(String.class);
                    setName(name);
+                   System.out.println(getName());
                }
 
                @Override
