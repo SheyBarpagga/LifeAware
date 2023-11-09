@@ -15,12 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -62,7 +67,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
 
         Bundle bundle = this.getArguments();
@@ -71,37 +76,65 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
             caregiver = bundle.getSerializable("caregiver", Caregiver.class);
         }
 
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground( final Void ... params ) {
-//                // something you know that will take a few seconds
-//                caregiver = ;
-//                return null;
-//            }
-//            @Override
-//            protected void onPostExecute( final Void result ) {
-
-//            }
-//        }.execute();
 
         TextView name = view.findViewById(R.id.user_name);
         name.setText(caregiver.getName());
-
-        getPatients(caregiver.getPatientIds());
         RecyclerView recyclerView = view.findViewById(R.id.patientList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new PatientAdapter(view.getContext(), patientNames);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new PatientAdapter(getContext(), new ArrayList<String>());
         adapter.setClickListener(CaregiverHomeFragment.this);
         recyclerView.setAdapter(adapter);
 
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+                // something you know that will take a few seconds
+                getPatients(caregiver.getPatientIds());
+                return null;
+            }
+            @Override
+            protected void onPostExecute( final Void result ) {
+                patientNames = new ArrayList<String>();
+                for(Patient patientID: patients) {
+                    patientNames.add(patientID.getName());
+                }
+                RecyclerView recyclerView = view.findViewById(R.id.patientList);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                adapter = new PatientAdapter(getContext(), patientNames);
+                adapter.setClickListener(CaregiverHomeFragment.this);
+                recyclerView.setAdapter(adapter);
+            }
+        }.execute();
+
+
         Button logoutButton = view.findViewById(R.id.LogoutButton);
         logoutButton.setOnClickListener(v -> {
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
             mAuth.signOut();
         });
 
+        Button addPatient = view.findViewById(R.id.addPatient);
+        addPatient.setOnClickListener(v -> {
+            EditText givenId = view.findViewById(R.id.enter_patient_id);
+            if(givenId.getText().toString().equals("")) {
+                Toast.makeText(getActivity(), "You must enter their ID", Toast.LENGTH_SHORT).show();
+            } else {
+                caregiver.addPatientId(givenId.getText().toString());
+                Toast.makeText(getActivity(), "New patient added", Toast.LENGTH_SHORT).show();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.detach(this).attach(this).commit();
+            }
+        });
         return view;
     }
+
+
+
+    //KtE8cUTutJciGkrF0e1z00YxDaNj2
+
+
+
 
     @Override
     public void onItemClick(View view, int position) {
@@ -119,13 +152,16 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void getPatients(List<String> patientIDs) {
         patients = new ArrayList<Patient>();
-        patientNames = new ArrayList<String>();
+        Patient patient ;
         for(String patientID: patientIDs) {
-            Patient patient = new Patient(patientID);
+
+            patient = new Patient(patientID);
+
             patients.add(patient);
-            patientNames.add(patient.getName());
+
         }
     }
 
@@ -136,26 +172,6 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
     }
 
-//    private void setData(View view) {
-//        ExecutorService executor = Executors.newFixedThreadPool(2);
-//        Runnable createCare = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                System.out.println("done");
-//            }
-//        };
-//
-//        Runnable setFields = new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        };
-//        executor.(createCare);
-//        executor.execute(setFields);
-//        executor.shutdown();
-//    }
 
 
     private synchronized void addFields(View view) {

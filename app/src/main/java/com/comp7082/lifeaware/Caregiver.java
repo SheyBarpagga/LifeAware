@@ -123,7 +123,7 @@ public class Caregiver implements Serializable {
     public void addPatientId(String patientId)
     {
         patientIds.add(patientId);
-        myRef.child("patientIds").setValue(patientIds);
+        myRef.child("patientIds").child(("" + patientId.length())).setValue(patientId);
     }
 
     public void setPatientIds(List<String> patientIds)
