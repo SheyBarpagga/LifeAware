@@ -2,6 +2,7 @@ package com.comp7082.lifeaware;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -64,29 +65,37 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground( final Void ... params ) {
-                // something you know that will take a few seconds
-                caregiver = new Caregiver();
-                return null;
-            }
-            @Override
-            protected void onPostExecute( final Void result ) {
-                TextView name = view.findViewById(R.id.user_name);
-                name.setText(caregiver.getName());
+        Bundle bundle = this.getArguments();
+        System.out.println(bundle);
 
-                System.out.println(caregiver.getName() + "gello");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            caregiver = bundle.getSerializable("caregiver", Caregiver.class);
+        }
+        System.out.println(caregiver.getName() + " eg");
 
-                getPatients(caregiver.getPatientIds());
-                RecyclerView recyclerView = view.findViewById(R.id.patientList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-                adapter = new PatientAdapter(view.getContext(), patientNames);
-                adapter.setClickListener(CaregiverHomeFragment.this);
-                recyclerView.setAdapter(adapter);
-            }
-        }.execute();
 
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground( final Void ... params ) {
+//                // something you know that will take a few seconds
+//                caregiver = ;
+//                return null;
+//            }
+//            @Override
+//            protected void onPostExecute( final Void result ) {
+
+//            }
+//        }.execute();
+
+        TextView name = view.findViewById(R.id.user_name);
+        name.setText(caregiver.getName());
+
+        getPatients(caregiver.getPatientIds());
+        RecyclerView recyclerView = view.findViewById(R.id.patientList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        adapter = new PatientAdapter(view.getContext(), patientNames);
+        adapter.setClickListener(CaregiverHomeFragment.this);
+        recyclerView.setAdapter(adapter);
 
         Button logoutButton = view.findViewById(R.id.LogoutButton);
         logoutButton.setOnClickListener(v -> {

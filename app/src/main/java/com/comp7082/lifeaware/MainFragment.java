@@ -1,7 +1,9 @@
 package com.comp7082.lifeaware;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +36,8 @@ import android.content.Context;
 import android.os.Build;
 import android.widget.ImageView;
 import androidx.core.app.NotificationCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Objects;
 
@@ -50,6 +55,8 @@ public class MainFragment extends Fragment {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
+
+    private Patient patient;
     private static final String CHANNEL_ID = "assistance_notification_channel";
 
     // TODO: Rename and change types of parameters
@@ -87,13 +94,32 @@ public class MainFragment extends Fragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        database = FirebaseDatabase.getInstance();
-        mAuth = FirebaseAuth.getInstance();
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+                // something you know that will take a few seconds
+                patient = new Patient();
+                return null;
+            }
+            @Override
+            protected void onPostExecute( final Void result ) {
+
+                TextView name = view.findViewById(R.id.user_name);
+                name.setText(patient.getName());
+                TextView age = view.findViewById(R.id.user_age);
+                age.setText(patient.getAge());
+
+            }
+        }.execute();
+
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         Button logoutButton = view.findViewById(R.id.LogoutButton);
         logoutButton.setOnClickListener(v -> {

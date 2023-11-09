@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.concurrent.CountDownLatch;
+
 public class Patient {
     private String id;
     private String name;
@@ -27,12 +29,13 @@ public class Patient {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         myRef = database.getReference(id);
-
+        CountDownLatch done = new CountDownLatch(3);
         myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                  String id = dataSnapshot.getValue(String.class);
                  setId(id);
+                 done.countDown();
              }
              @Override
              public void onCancelled(@NonNull DatabaseError error) {
@@ -44,6 +47,7 @@ public class Patient {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.getValue(String.class);
                 setName(name);
+                done.countDown();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -55,13 +59,74 @@ public class Patient {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String age = dataSnapshot.getValue(String.class);
                 setAge(age);
+                done.countDown();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+        try {
+            done.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    private void setUp() {
+        database = FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        myRef = database.getReference(user.getUid());
+        CountDownLatch done = new CountDownLatch(3);
+        myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String id = dataSnapshot.getValue(String.class);
+                setId(id);
+                done.countDown();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        myRef.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue(String.class);
+                setName(name);
+                System.out.println(getName());
+                done.countDown();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        myRef.child("age").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String age = dataSnapshot.getValue(String.class);
+                setAge(age);
+                done.countDown();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        try {
+            done.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Patient() {
+        setUp();
+    }
+
     public String getId() {
         return id;
     }

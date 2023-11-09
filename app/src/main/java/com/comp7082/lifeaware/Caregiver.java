@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 public class Caregiver implements Serializable {
     private FirebaseAuth mAuth;
@@ -34,12 +35,13 @@ public class Caregiver implements Serializable {
 
         user = mAuth.getCurrentUser();
         myRef = database.getReference(user.getUid());
-
+        CountDownLatch done = new CountDownLatch(3);
         myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String id = dataSnapshot.getValue(String.class);
                 setId(id);
+                done.countDown();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -52,6 +54,7 @@ public class Caregiver implements Serializable {
                    String name = dataSnapshot.getValue(String.class);
                    setName(name);
                    System.out.println(getName());
+                   done.countDown();
                }
 
                @Override
@@ -65,7 +68,9 @@ public class Caregiver implements Serializable {
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     String patientId = postSnapshot.getValue().toString();
                     patientIds.add(patientId);
+
                 }
+                done.countDown();
             }
 
             @Override
@@ -73,6 +78,11 @@ public class Caregiver implements Serializable {
 
             }
         });
+        try {
+            done.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getId()
