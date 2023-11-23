@@ -16,9 +16,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -32,11 +35,29 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
+        DatabaseReference myRef = database.getReference((Objects.requireNonNull(mAuth.getCurrentUser())).getUid());
+        myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Boolean caretaker = dataSnapshot.getValue(Boolean.class);
+                if (Boolean.TRUE.equals(caretaker)) {
+                    Intent intent = new Intent(MainActivity.this, CaregiverActivity.class);
+                    MainActivity.this.startActivity(intent);
+                } else {
+                    // Start the FallDetectionService if the user is a patient
+                    Intent intent = new Intent(MainActivity.this, FallDetectionService.class);
+                    startForegroundService(intent);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new MainFragment());
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
@@ -59,41 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-//        user = mAuth.getCurrentUser();
-////        Log.d("after intent 22222", "why are you here 222");
-//
-//        DatabaseReference databaseReference = database.getReference(user.getUid().toString());
-//
-//        Log.d("name stuff", databaseReference.child("name").toString());
-//        databaseReference.child("name").toString();
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                // this method is call to get the realtime
-//                // updates in the data.
-//                // this method is called when the data is
-//                // changed in our Firebase console.
-//                // below line is for getting the data from
-//                // snapshot of our database.
-//                String value = snapshot.getValue("name");
-//
-//                // after getting the value we are setting
-//                // our value to our text view in below line.
-//                Log.d("name stuff", value.toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                // calling on cancelled method when we receive
-//                // any error or we are not able to get the data.
-//                Toast.makeText(MainActivity.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
     }
-
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

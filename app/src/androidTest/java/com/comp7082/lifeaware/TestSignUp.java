@@ -88,7 +88,7 @@ public class TestSignUp {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("test@test.com"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.passwordText),
