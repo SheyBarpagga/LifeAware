@@ -32,4 +32,39 @@
     <string name="enterPatientId">Enter Patient ID</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="success_message">Successful</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email_password">This email or password is invalid</string>
+    <string name="error_invalid_email">Enter valid email</string>
+    <string name="error_invalid_name">Enter a name pls</string>
+    <string name="error_empty_email">Enter an email</string>
+    <string name="error_empty_name">Enter a name</string>
+    <string name="error_email_exists">Email exists</string>
+    <string name="error_empty_password">Enter Password</string>
+    <string name="error_empty_age">Enter Age</string>
+    <string name="error_invalid_age">User must be between 18 and 120 years old</string>
+    <string name="error_invalid_password">Password must contain a capital\nPassword must contain a lowercase\nPassword must contain a number\nString must be between 6 and 20 characters</string>
+    <string name="error_passwords_dont_match">Passwords Don\'t Match</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="log_in">Log In</string>
+    <string name="register">Register</string>
+    <string name="password_hint">Password</string>
+    <string name="password_confirm_hint">Confirm Password</string>
+    <string name="email_hint">Email</string>
+    <string name="name_hint">Name</string>
+    <string name="text_register">Register</string>
+    <string name="successful_login">Successful Login</string>
+    <string name="website_link">Website link</string>
+    <string name="description">Description</string>
+    <string name="address">Address</string>
+    <string name="event_name">Event Name</string>
+    <string name="cancel">Cancel</string>
 </resources>
