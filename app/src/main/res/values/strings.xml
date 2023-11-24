@@ -26,6 +26,8 @@
     <string name="assistance_cancelled">Assistance request cancelled.</string>
     <string name="patient_name">Name</string>
     <string name="patient_age">age</string>
+    <string name="user_id">Patient ID:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_alert_details">AlertDetailsActivity</string>
 </resources>

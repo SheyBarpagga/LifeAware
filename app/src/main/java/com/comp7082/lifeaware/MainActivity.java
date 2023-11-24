@@ -35,22 +35,45 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         database = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        DatabaseReference myRef = database.getReference((Objects.requireNonNull(mAuth.getCurrentUser())).getUid());
-        myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Boolean caretaker = dataSnapshot.getValue(Boolean.class);
-                if (Boolean.TRUE.equals(caretaker)) {
-                    Intent intent = new Intent(MainActivity.this, CaregiverActivity.class);
-                    MainActivity.this.startActivity(intent);
-                } else {
-                    // Start the FallDetectionService if the user is a patient
-                    Intent intent = new Intent(MainActivity.this, FallDetectionService.class);
-                    startForegroundService(intent);
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            DatabaseReference myRef = database.getReference((Objects.requireNonNull(mAuth.getCurrentUser())).getUid());
+            myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Boolean caretaker = dataSnapshot.getValue(Boolean.class);
+                    if (Boolean.TRUE.equals(caretaker)) {
+                        Intent intent = new Intent(MainActivity.this, CaregiverActivity.class);
+                        MainActivity.this.startActivity(intent);
+                    }
                 }
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+            myRef.child("isPatient").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Boolean patient = dataSnapshot.getValue(Boolean.class);
+                    if (Boolean.TRUE.equals(patient)) {
+                        Intent intent = new Intent(MainActivity.this, PatientActivity.class);
+                        MainActivity.this.startActivity(intent);
+                        Intent intent2 = new Intent(MainActivity.this, FallDetectionService.class);
+                        startForegroundService(intent2);
+
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (mAuth.getCurrentUser() == null) {
+                    Intent signUpScreen = new Intent(MainActivity.this, SignUpActivity.class);
+                    startActivity(signUpScreen);
+                }
             }
         });
         super.onCreate(savedInstanceState);
@@ -69,16 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
             return true;
-        });
-
-        mAuth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (mAuth.getCurrentUser() == null) {
-                    Intent signUpScreen = new Intent(MainActivity.this, SignUpActivity.class);
-                    startActivity(signUpScreen);
-                }
-            }
         });
     }
     private void replaceFragment(Fragment fragment) {

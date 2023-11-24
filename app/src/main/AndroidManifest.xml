@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
         android:name="android.hardware.telephony"
         android:required="false" />
-    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -25,6 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LifeAware"
         tools:targetApi="31">
+        <activity
+            android:name=".AlertDetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_alert_details"
+            android:theme="@style/Theme.LifeAware" />
+
         <service
             android:name=".FallDetectionService"
             android:enabled="true"
@@ -47,11 +54,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".CaregiverActivity"
             android:exported="false" />
     </application>
-
 
 </manifest>

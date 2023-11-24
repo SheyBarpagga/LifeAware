@@ -3,7 +3,6 @@ package com.comp7082.lifeaware;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
@@ -12,7 +11,7 @@ import android.hardware.SensorManager;
 
 public class FallDetectionService extends Service {
     private static final int NOTIFICATION_ID = 1;
-    private FallDetector fallDetector;
+    private FallDetection fallDetection;
 
     private static final String CHANNEL_ID = "service_notification_channel";
 
@@ -21,7 +20,7 @@ public class FallDetectionService extends Service {
     public void onCreate() {
         super.onCreate();
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        fallDetector = new FallDetector(sensorManager);
+        fallDetection = new FallDetection(sensorManager);
     }
 
     @Override
@@ -37,13 +36,13 @@ public class FallDetectionService extends Service {
 
         startForeground(NOTIFICATION_ID, notification);
 
-        fallDetector.startListening();
+        fallDetection.startListening();
         return START_NOT_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        fallDetector.stopListening();
+        fallDetection.stopListening();
         super.onDestroy();
     }
 
