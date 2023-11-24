@@ -1,6 +1,7 @@
 package com.comp7082.lifeaware;
 
 import static android.app.PendingIntent.getActivity;
+import static android.content.ContentValues.TAG;
 
 import static androidx.test.InstrumentationRegistry.getContext;
 
@@ -15,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class CaregiverActivity extends AppCompatActivity {
 
@@ -37,7 +41,8 @@ public class CaregiverActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     FirebaseAuth.AuthStateListener mAuthListener;
     Caregiver cg;
-
+    ArrayList<Patient> patients;
+Patient pat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +70,14 @@ public class CaregiverActivity extends AppCompatActivity {
         });
         database = FirebaseDatabase.getInstance();
 
+
+
         database.getReference(mAuth.getCurrentUser().getUid()).child("help").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
                     String help = postSnapshot.getValue().toString();
+                    Log.d(TAG, "Listening");
                     if(!help.equals("")) {
                         CharSequence text = help + "needs help!";
                         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
@@ -105,18 +113,20 @@ public class CaregiverActivity extends AppCompatActivity {
             protected Void doInBackground( final Void ... params ) {
                 // something you know that will take a few seconds
                 cg = new Caregiver();
+                pat = new Patient("KtE8cUTutJciGkrF0e1z00YxDaNj2");
                 return null;
             }
             @Override
             protected void onPostExecute( final Void result ) {
+
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("caregiver", cg);
+                bundle.putSerializable("patients", pat);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                 fragmentTransaction.commit();
-
             }
         }.execute();
 
