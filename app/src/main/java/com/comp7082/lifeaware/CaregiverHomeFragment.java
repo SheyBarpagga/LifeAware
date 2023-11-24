@@ -2,7 +2,7 @@ package com.comp7082.lifeaware;
 
 import static android.content.ContentValues.TAG;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+//import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
@@ -130,7 +130,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                                     Log.d(TAG, "Listening");
                                     if(!help.equals("")) {
                                         CharSequence text = help + "needs help!";
-                                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
                                     }
 
                                 }
@@ -186,7 +186,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                     Log.d(TAG, "Listening");
                     if(!help.equals("")) {
                         CharSequence text = help + "needs help!";
-                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
                     }
 
                 }
