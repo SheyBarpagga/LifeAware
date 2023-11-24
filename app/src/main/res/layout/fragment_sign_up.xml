@@ -25,6 +25,7 @@
         tools:visibility="visible" />
 
     <EditText
+        android:importantForAutofill="no"
         android:id="@+id/nameText"
         android:layout_width="379dp"
         android:layout_height="49dp"
@@ -43,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/SignUpText" />
 
     <EditText
+        android:importantForAutofill="no"
         android:id="@+id/emailAddressText"
         android:layout_width="379dp"
         android:layout_height="49dp"
@@ -61,6 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/nameText" />
 
     <EditText
+        android:importantForAutofill="no"
         android:id="@+id/passwordText"
         android:layout_width="379dp"
         android:layout_height="49dp"
@@ -79,6 +82,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailAddressText" />
 
     <EditText
+        android:importantForAutofill="no"
         android:id="@+id/ageText"
         android:layout_width="379dp"
         android:layout_height="49dp"

@@ -55,14 +55,16 @@ Patient pat;
         setContentView(binding.getRoot());
         replaceFragment(new CaregiverHomeFragment());
 
+        final int profile = R.id.profile;
+        final int home = R.id.home;
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
-                case R.id.profile:
+                case profile:
                     replaceFragment(new CaregiverProfileFragment());
                     break;
-                case R.id.home:
+                case home:
                     replaceFragment(new CaregiverHomeFragment());
                     break;
             }
