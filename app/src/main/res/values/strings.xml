@@ -26,6 +26,10 @@
     <string name="assistance_cancelled">Assistance request cancelled.</string>
     <string name="patient_name">Name</string>
     <string name="patient_age">age</string>
+    <string name="home">home</string>
+    <string name="profile">Profile</string>
+    <string name="addPatient">Add Patient</string>
+    <string name="enterPatientId">Enter Patient ID</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

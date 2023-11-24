@@ -17,6 +17,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    lintOptions {
+        htmlOutput file("$buildDir/report/lint-results-debug.html")
+    }
+
     buildFeatures {
         dataBinding = true
         viewBinding = true
