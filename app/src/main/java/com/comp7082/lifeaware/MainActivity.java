@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
             switch(item.getItemId()) {
                 case profile:
-                    replaceFragment(new CaregiverProfileFragment());
+                    replaceFragment(new ProfileFragment());
                     break;
                 case home:
-                    replaceFragment(new CaregiverHomeFragment());
+                    replaceFragment(new MainFragment());
                     break;
             }
             return true;
