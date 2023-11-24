@@ -37,14 +37,18 @@ public class SignUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new SignUpFragment());
+
+        final int profile = R.id.profile;
+        final int home = R.id.home;
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
-                case R.id.signIn:
-                    replaceFragment(new SignInFragment());
+                case profile:
+                    replaceFragment(new CaregiverProfileFragment());
                     break;
-                case R.id.signUp:
-                    replaceFragment(new SignUpFragment());
+                case home:
+                    replaceFragment(new CaregiverHomeFragment());
                     break;
             }
             return true;

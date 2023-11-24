@@ -1,5 +1,9 @@
 package com.comp7082.lifeaware;
 
+import static android.content.ContentValues.TAG;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -12,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +48,12 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
     PatientAdapter adapter;
 
-
-    private List<Patient> patients;
+    Object lockObject = new Object();
+    private ArrayList<Patient> patients;
     private List<String> patientNames;
-
+    Patient pat;
     Caregiver caregiver;
+    FirebaseDatabase database;
 
 
 
@@ -74,6 +80,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
 
+        database = FirebaseDatabase.getInstance();
         Bundle bundle = this.getArguments();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -89,20 +96,53 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         adapter.setClickListener(CaregiverHomeFragment.this);
         recyclerView.setAdapter(adapter);
 
+
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground( final Void ... params ) {
                 // something you know that will take a few seconds
-                getPatients(caregiver.getPatientIds());
+                //getPatients(caregiver.getPatientIds());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    pat =  bundle.getSerializable("patients", Patient.class);
+                }
+                patients = new ArrayList<Patient>();
+//                Patient patient;
+//                for(String patientID: caregiver.getPatientIds()) {
+//                    patient = new Patient(patientID);
+//                    patients.add(patient);
+//                }
                 return null;
             }
             @Override
             protected void onPostExecute( final Void result ) {
                 patientNames = new ArrayList<String>();
-                for(Patient patientID: patients) {
-                    patientNames.add(patientID.getName());
-                }
+
+                patients.add(pat);
+                    for(Patient patientID: patients) {
+                        patientNames.add(patientID.getName());
+                        System.out.println(patientID.getName());
+                        database.getReference("KtE8cUTutJciGkrF0e1z00YxDaNj2").child("help").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                                    String help = postSnapshot.getValue().toString();
+                                    Log.d(TAG, "Listening");
+                                    if(!help.equals("")) {
+                                        CharSequence text = help + "needs help!";
+                                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+
                 RecyclerView recyclerView = view.findViewById(R.id.patientList);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 adapter = new PatientAdapter(getContext(), patientNames);
@@ -135,6 +175,29 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                 ft.detach(this).attach(this).commit();
             }
         });
+
+
+
+        database.getReference(mAuth.getCurrentUser().getUid()).child("help").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+                    String help = postSnapshot.getValue().toString();
+                    Log.d(TAG, "Listening");
+                    if(!help.equals("")) {
+                        CharSequence text = help + "needs help!";
+                        Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         return view;
     }
 
@@ -164,14 +227,12 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     @SuppressLint("StaticFieldLeak")
     private void getPatients(List<String> patientIDs) {
         patients = new ArrayList<Patient>();
-        Patient patient ;
-        for(String patientID: patientIDs) {
+        Patient patient;
+            for(String patientID: patientIDs) {
+                patient = new Patient(patientID);
+                patients.add(patient);
+            }
 
-            patient = new Patient(patientID);
-
-            patients.add(patient);
-
-        }
     }
 
     @Override

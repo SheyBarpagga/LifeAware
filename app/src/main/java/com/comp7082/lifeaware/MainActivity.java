@@ -41,14 +41,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        final int profile = R.id.profile;
+        final int home = R.id.home;
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
-                case R.id.profile:
-                    replaceFragment(new ProfileFragment());
+                case profile:
+                    replaceFragment(new CaregiverProfileFragment());
                     break;
-                case R.id.home:
-                    replaceFragment(new MainFragment());
+                case home:
+                    replaceFragment(new CaregiverHomeFragment());
                     break;
             }
             return true;

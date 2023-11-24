@@ -24,6 +24,8 @@
         tools:visibility="visible" />
 
     <EditText
+        android:hint="@string/Password"
+        android:importantForAutofill="no"
         android:id="@+id/passwordText"
         android:layout_width="379dp"
         android:layout_height="49dp"
@@ -42,6 +44,8 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
+        android:hint="@string/Email"
+        android:importantForAutofill="no"
         android:id="@+id/emailAddressText"
         android:layout_width="379dp"
         android:layout_height="49dp"
