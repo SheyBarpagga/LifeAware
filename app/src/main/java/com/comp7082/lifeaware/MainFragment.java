@@ -124,7 +124,7 @@ public class MainFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            patient = bundle.getSerializable("patient", Patient.class);
+            patient = bundle.getParcelable("patient", Patient.class);
         }
 
 

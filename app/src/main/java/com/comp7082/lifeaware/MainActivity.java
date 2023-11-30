@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("patient", patient);
+                bundle.putParcelable("patient", patient);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                 fragmentTransaction.commit();

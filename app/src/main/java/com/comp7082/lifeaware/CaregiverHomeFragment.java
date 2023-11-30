@@ -84,7 +84,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         Bundle bundle = this.getArguments();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            caregiver = bundle.getSerializable("caregiver", Caregiver.class);
+            caregiver = bundle.getParcelable("caregiver", Caregiver.class);
         }
 
 
@@ -104,7 +104,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                 // something you know that will take a few seconds
                 //getPatients(caregiver.getPatientIds());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    pat =  bundle.getSerializable("patients", Patient.class);
+                    pat =  bundle.getParcelable("patients", Patient.class);
                 }
                 patients = new ArrayList<Patient>();
 //                Patient patient;
