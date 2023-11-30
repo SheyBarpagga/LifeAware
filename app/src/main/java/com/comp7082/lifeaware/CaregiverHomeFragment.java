@@ -87,12 +87,19 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
             caregiver = bundle.getParcelable("caregiver", Caregiver.class);
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            //pat =  bundle.getParcelable("patients", Patient.class);
+            pat = bundle.getParcelable("patient1", Patient.class);
+        }
+        //System.out.println(pat.getName()+"hello");
 
+        ArrayList<String> test =  new ArrayList<String>();
+        test.add("test");
         TextView name = view.findViewById(R.id.user_name);
         name.setText(caregiver.getName());
         RecyclerView recyclerView = view.findViewById(R.id.patientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new PatientAdapter(getContext(), new ArrayList<String>());
+        adapter = new PatientAdapter(getContext(), test);
         adapter.setClickListener(CaregiverHomeFragment.this);
         recyclerView.setAdapter(adapter);
 
@@ -118,36 +125,36 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
             protected void onPostExecute( final Void result ) {
                 patientNames = new ArrayList<String>();
 
-                patients.add(pat);
-                    for(Patient patientID: patients) {
-                        patientNames.add(patientID.getName());
-                        System.out.println(patientID.getName());
-                        database.getReference("KtE8cUTutJciGkrF0e1z00YxDaNj2").child("help").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                                    String help = postSnapshot.getValue().toString();
-                                    Log.d(TAG, "Listening");
-                                    if(!help.equals("")) {
-                                        CharSequence text = help + "needs help!";
-                                        Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
-                                    }
+//                patients.add(pat);
+//                    for(Patient patientID: patients) {
+//                        patientNames.add(patientID.getName());
+//                        System.out.println(patientID.getName());
+//                        database.getReference("KtE8cUTutJciGkrF0e1z00YxDaNj2").child("help").addValueEventListener(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
+//                                    String help = postSnapshot.getValue().toString();
+//                                    Log.d(TAG, "Listening");
+//                                    if(!help.equals("")) {
+//                                        CharSequence text = help + "needs help!";
+//                                        Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
+//                                    }
+//
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
+//                    }
 
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
-                    }
-
-                RecyclerView recyclerView = view.findViewById(R.id.patientList);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                adapter = new PatientAdapter(getContext(), patientNames);
-                adapter.setClickListener(CaregiverHomeFragment.this);
-                recyclerView.setAdapter(adapter);
+//                RecyclerView recyclerView = view.findViewById(R.id.patientList);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//                adapter = new PatientAdapter(getContext(), patientNames);
+//                adapter.setClickListener(CaregiverHomeFragment.this);
+//                recyclerView.setAdapter(adapter);
             }
         }.execute();
 
