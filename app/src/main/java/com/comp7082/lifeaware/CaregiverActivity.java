@@ -42,6 +42,7 @@ public class CaregiverActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener mAuthListener;
     Caregiver cg;
     ArrayList<Patient> patients;
+    Bundle bundle;
 Patient pat;
 
     @Override
@@ -108,24 +109,50 @@ Patient pat;
 
     @SuppressLint("StaticFieldLeak")
     private void replaceFragment(Fragment fragment) {
-
+        bundle = new Bundle();
         new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground( final Void ... params ) {
                 // something you know that will take a few seconds
                 cg = new Caregiver();
-                pat = new Patient("KtE8cUTutJciGkrF0e1z00YxDaNj2");
+                //pat = new Patient("JFCwB4lc6UhfzjmXANE1RUSAe7h1");
                 return null;
             }
             @Override
             protected void onPostExecute( final Void result ) {
-
+                System.out.println(cg.getPatientIds());
+//                new AsyncTask<Void, Void, Void>() {
+//
+//                    @Override
+//                    protected Void doInBackground( final Void ... params ) {
+//                        for(String patientID: cg.getPatientIds()) {
+//                            Patient patient = new Patient(patientID);
+//                            patients.add(patient);
+//                        }
+//                        return null;
+//                    }
+//                    @Override
+//                    protected void onPostExecute( final Void result ) {
+//                        for(int x = 1; x <= patients.size(); x++) {
+//                            System.out.println(x);
+//                            bundle.putParcelable("patient" + x, patients.get(x));
+//                        }
+//                        FragmentManager fragmentManager = getSupportFragmentManager();
+//                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                        //Bundle bundle = new Bundle();
+//                        bundle.putParcelable("caregiver", cg);
+//                        //bundle.putParcelable("patients", pat);
+//                        fragment.setArguments(bundle);
+//                        fragmentTransaction.replace(R.id.frame_layout, fragment);
+//                        fragmentTransaction.commit();
+//                    }
+//                }.execute();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Bundle bundle = new Bundle();
+                //Bundle bundle = new Bundle();
                 bundle.putParcelable("caregiver", cg);
-                bundle.putParcelable("patients", pat);
+                //bundle.putParcelable("patients", pat);
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                 fragmentTransaction.commit();
