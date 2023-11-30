@@ -3,6 +3,8 @@ package com.comp7082.lifeaware;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -29,44 +31,26 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-// WARNING: Espresso Test Recorder was paused during recording.
-// The generated test may be missing actions which might lead to unexpected behavior.
-public class TestProfileAndSignOut {
+public class TestLoginCare {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void testProfileAndSignOut() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void testLoginCare() throws InterruptedException {
         ViewInteraction bottomNavigationItemView = onView(
-                allOf(withId(R.id.profile), withContentDescription("Profile"),
+                allOf(withId(R.id.signIn), withContentDescription("Sign In"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottomNavigationView),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.addPatient), withText("Add Patient"),
-                        childAtPosition(
-                                allOf(withId(R.id.contraint_layout),
-                                        childAtPosition(
-                                                withId(R.id.frame_layout),
-                                                0)),
-                                8),
-                        isDisplayed()));
-        materialButton.perform(click());
-
         ViewInteraction bottomNavigationItemView2 = onView(
-                allOf(withId(R.id.home), withContentDescription("Home"),
+                allOf(withId(R.id.signIn), withContentDescription("Sign In"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottomNavigationView),
@@ -75,31 +59,42 @@ public class TestProfileAndSignOut {
                         isDisplayed()));
         bottomNavigationItemView2.perform(click());
 
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.LogoutButton), withText("Log Out"),
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.emailAddressText),
                         childAtPosition(
-                                allOf(withId(R.id.contraint_layout),
-                                        childAtPosition(
-                                                withId(R.id.frame_layout),
-                                                0)),
-                                6),
+                                childAtPosition(
+                                        withId(R.id.frame_layout),
+                                        0),
+                                2),
                         isDisplayed()));
-        materialButton2.perform(click());
+        appCompatEditText.perform(replaceText("testcare@test.com"), closeSoftKeyboard());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.SignUpText), withText("Sign Up"),
-                        withParent(withParent(withId(R.id.frame_layout))),
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.passwordText),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.frame_layout),
+                                        0),
+                                1),
                         isDisplayed()));
-        textView.check(matches(withText("Sign Up")));
+        appCompatEditText2.perform(replaceText("Test123"), closeSoftKeyboard());
+
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.buttonSignIn), withText("Login"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.frame_layout),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton.perform(click());
+        Thread.sleep(1000);
+        ViewInteraction button = onView(
+                allOf(withId(R.id.addPatient), withText("ADD PATIENT"),
+                        withParent(allOf(withId(R.id.contraint_layout),
+                                withParent(withId(R.id.frame_layout)))),
+                        isDisplayed()));
+        button.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(
