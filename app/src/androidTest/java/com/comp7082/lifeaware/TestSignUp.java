@@ -55,7 +55,7 @@ public class TestSignUp {
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(7000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -88,7 +88,7 @@ public class TestSignUp {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("test@test.com"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("test2@test.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.passwordText),
@@ -130,7 +130,7 @@ public class TestSignUp {
                         isDisplayed()));
         materialButton.perform(click());
         try {
-            Thread.sleep(7000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
