@@ -1,5 +1,8 @@
 package com.comp7082.lifeaware;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public class Caregiver implements Serializable {
+public class Caregiver implements Parcelable {
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private FirebaseUser user;
@@ -28,6 +31,27 @@ public class Caregiver implements Serializable {
     public Caregiver() {
         setUp();
     }
+
+    protected Caregiver(Parcel in) {
+        user = in.readParcelable(FirebaseUser.class.getClassLoader());
+        id = in.readString();
+        name = in.readString();
+        phoneNumber = in.readString();
+        patientIds = in.createStringArrayList();
+    }
+
+    public static final Creator<Caregiver> CREATOR = new Creator<Caregiver>() {
+        @Override
+        public Caregiver createFromParcel(Parcel in) {
+            return new Caregiver(in);
+        }
+
+        @Override
+        public Caregiver[] newArray(int size) {
+            return new Caregiver[size];
+        }
+    };
+
     public void setUp()
     {
         database = FirebaseDatabase.getInstance();
@@ -133,4 +157,17 @@ public class Caregiver implements Serializable {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeParcelable(user, i);
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(phoneNumber);
+        parcel.writeStringList(patientIds);
+    }
 }

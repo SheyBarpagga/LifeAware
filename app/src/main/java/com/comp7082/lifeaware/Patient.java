@@ -1,6 +1,8 @@
 package com.comp7082.lifeaware;
 
 import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 import java.util.concurrent.CountDownLatch;
 
-public class Patient implements Serializable {
+public class Patient implements Parcelable {
     private String id;
     private String name;
     private String age;
@@ -73,6 +75,25 @@ public class Patient implements Serializable {
             throw new RuntimeException(e);
         }
     }
+
+    protected Patient(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        age = in.readString();
+        user = in.readParcelable(FirebaseUser.class.getClassLoader());
+    }
+
+    public static final Creator<Patient> CREATOR = new Creator<Patient>() {
+        @Override
+        public Patient createFromParcel(Parcel in) {
+            return new Patient(in);
+        }
+
+        @Override
+        public Patient[] newArray(int size) {
+            return new Patient[size];
+        }
+    };
 
     private void setUp() {
         database = FirebaseDatabase.getInstance();
@@ -150,5 +171,18 @@ public class Patient implements Serializable {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(name);
+        parcel.writeString(age);
+        parcel.writeParcelable(user, i);
     }
 }
