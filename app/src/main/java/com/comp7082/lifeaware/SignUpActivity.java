@@ -37,14 +37,16 @@ public class SignUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new SignUpFragment());
+
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
-                case R.id.signIn:
-                    replaceFragment(new SignInFragment());
-                    break;
                 case R.id.signUp:
                     replaceFragment(new SignUpFragment());
+                    break;
+                case R.id.signIn:
+                    replaceFragment(new SignInFragment());
                     break;
             }
             return true;

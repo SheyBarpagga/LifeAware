@@ -2,6 +2,7 @@ package com.comp7082.lifeaware;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,11 +21,15 @@ import android.widget.Toast;
 import com.comp7082.lifeaware.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
 
 import java.util.Arrays;
@@ -52,8 +57,10 @@ public class SignUpFragment extends Fragment {
     EditText emailEdit;
     EditText passwordEdit;
     EditText ageEdit;
+    TextInputLayout helpLayout;
     FirebaseAuth mAuth;
     FirebaseDatabase database;
+    private InputValidation inputValidation;
 
     ActivityMainBinding binding;
 
@@ -93,6 +100,7 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        inputValidation = new InputValidation(this.getActivity());
 
         View view;
         Button signUpButton;
@@ -128,11 +136,61 @@ public class SignUpFragment extends Fragment {
                 emailEdit       = (EditText) view.findViewById((R.id.emailAddressText));
                 passwordEdit    = (EditText) view.findViewById((R.id.passwordText));
                 ageEdit         = (EditText) view.findViewById((R.id.ageText));
+                helpLayout      = (TextInputLayout) view.findViewById(R.id.textInputLayoutSignUp);
 
                 String name         = nameEdit.getText().toString();
                 String email        = emailEdit.getText().toString();
                 String password     = passwordEdit.getText().toString();
                 String age          = ageEdit.getText().toString();
+
+                if (!inputValidation.inputTextFieldEditEmpty(nameEdit,
+                        helpLayout,
+                        getString(R.string.error_empty_name)))
+                {
+                    return;
+                }
+
+                if (!inputValidation.inputTextFieldEditEmpty(emailEdit,
+                        helpLayout,
+                        getString(R.string.error_empty_email)))
+                {
+                    return;
+                }
+
+                if (!inputValidation.inputTextEmailEditValid(emailEdit,
+                        helpLayout,
+                        getString(R.string.error_invalid_email)))
+                {
+                    return;
+                }
+
+                if (!inputValidation.inputTextFieldEditEmpty(passwordEdit,
+                        helpLayout,
+                        getString(R.string.error_empty_password)))
+                {
+                    return;
+                }
+
+                if (!inputValidation.inputTextPasswordEditValid(passwordEdit,
+                        helpLayout,
+                        getString(R.string.error_invalid_password)))
+                {
+                    return;
+                }
+
+                if (!inputValidation.inputTextFieldEditEmpty(ageEdit,
+                        helpLayout,
+                        getString(R.string.error_empty_age)))
+                {
+                    return;
+                }
+
+                if (!inputValidation.inputTextAgeValid(ageEdit,
+                        helpLayout,
+                        getString(R.string.error_invalid_age)))
+                {
+                    return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -145,6 +203,19 @@ public class SignUpFragment extends Fragment {
                             myRef.child("name").setValue(name);
                             myRef.child("age").setValue(age);
                             myRef.child("isCaretaker").setValue(isCaretaker);
+                            myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    Boolean caretaker = dataSnapshot.getValue(Boolean.class);
+                                    if (caretaker) {
+                                        Intent intent = new Intent(getActivity(), CaregiverActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
 
                             getActivity().finish();
                         }else {

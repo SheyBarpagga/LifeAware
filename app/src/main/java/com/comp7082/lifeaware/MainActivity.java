@@ -15,7 +15,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     FirebaseAuth.AuthStateListener mAuthListener;
 
+    Patient patient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         FirebaseApp.initializeApp(this);
@@ -36,14 +40,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new MainFragment());
+
+        final int profile = R.id.profile;
+        final int home = R.id.home;
+
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
             switch(item.getItemId()) {
-                case R.id.profile:
+                case profile:
                     replaceFragment(new ProfileFragment());
                     break;
-                case R.id.home:
+                case home:
                     replaceFragment(new MainFragment());
                     break;
             }
@@ -60,44 +67,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        user = mAuth.getCurrentUser();
-////        Log.d("after intent 22222", "why are you here 222");
-//
-//        DatabaseReference databaseReference = database.getReference(user.getUid().toString());
-//
-//        Log.d("name stuff", databaseReference.child("name").toString());
-//        databaseReference.child("name").toString();
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                // this method is call to get the realtime
-//                // updates in the data.
-//                // this method is called when the data is
-//                // changed in our Firebase console.
-//                // below line is for getting the data from
-//                // snapshot of our database.
-//                String value = snapshot.getValue("name");
-//
-//                // after getting the value we are setting
-//                // our value to our text view in below line.
-//                Log.d("name stuff", value.toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                // calling on cancelled method when we receive
-//                // any error or we are not able to get the data.
-//                Toast.makeText(MainActivity.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        if(mAuth.getCurrentUser() != null) {
+            DatabaseReference myRef = database.getReference(mAuth.getCurrentUser().getUid());
+            myRef.child("isCaretaker").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Boolean caretaker = dataSnapshot.getValue(Boolean.class);
+                    if (caretaker) {
+                        Intent intent = new Intent(MainActivity.this, CaregiverActivity.class);
+                        MainActivity.this.startActivity(intent);
+                    } else {
+                        replaceFragment(new MainFragment());
+                    }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+
+        }
 
 
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.commit();
+
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected Void doInBackground( final Void ... params ) {
+                // something you know that will take a few seconds
+                patient =  new Patient();
+                return null;
+            }
+            @Override
+            protected void onPostExecute( final Void result ) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("patient", patient);
+                fragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                fragmentTransaction.commit();
+
+            }
+        }.execute();
+
     }
 }

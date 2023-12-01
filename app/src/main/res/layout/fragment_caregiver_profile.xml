@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/patient_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -31,7 +31,7 @@
         android:layout_width="116dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
-        android:text="Profile"
+        android:text="@string/profile"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
@@ -49,14 +49,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/patient_id"
         app:srcCompat="@drawable/circle" />
+
 
     <TextView
         android:id="@+id/user_name"
         android:layout_width="125dp"
         android:layout_height="29dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:text="Jane Smith"
         android:textAlignment="center"
         android:textColor="#000000"
@@ -66,12 +67,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-
     <Button
         android:id="@+id/patinetID"
         android:layout_width="274dp"
         android:layout_height="48dp"
 
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#FAFFFF"
         android:text="Patient ID"
@@ -82,32 +83,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.561"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_name"
         app:strokeColor="#5DABB0"
-        app:strokeWidth="1dp"
-        tools:layout_editor_absoluteY="341dp" />
+        app:strokeWidth="1dp" />
 
     <EditText
+        android:importantForAutofill="no"
         android:id="@+id/phoneNumber"
         android:layout_width="379dp"
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/gray_border"
         android:ems="10"
         android:hint="Phone number"
-        android:inputType="text"
+        android:inputType="phone"
         android:padding="10dp"
         android:textColor="#878787"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="463dp" />
+        app:layout_constraintTop_toBottomOf="@+id/patinetID" />
 
     <EditText
+        android:importantForAutofill="no"
         android:id="@+id/emailAddress"
         android:layout_width="379dp"
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/gray_border"
         android:ems="10"
@@ -118,7 +123,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="552dp" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
