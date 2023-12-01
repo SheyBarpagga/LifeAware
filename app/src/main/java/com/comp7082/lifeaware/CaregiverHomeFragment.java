@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,9 +63,8 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     }
 
     public static CaregiverHomeFragment newInstance(String param1, String param2) {
-        CaregiverHomeFragment fragment = new CaregiverHomeFragment();
 
-        return fragment;
+        return new CaregiverHomeFragment();
     }
 
     @Override
@@ -87,26 +87,21 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
             caregiver = bundle.getParcelable("caregiver", Caregiver.class);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            //pat =  bundle.getParcelable("patients", Patient.class);
-            pat = bundle.getParcelable("patient0", Patient.class);
-        }
-        //System.out.println(pat.getName() + "hello");
-
         ArrayList<String> test = new ArrayList<String>();
         test.add("test");
+        getPatients(caregiver.patientIds, bundle);
+
         TextView name = view.findViewById(R.id.user_name);
         name.setText(caregiver.getName());
+
         RecyclerView recyclerView = view.findViewById(R.id.patientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new PatientAdapter(getContext(), test);
+        adapter = new PatientAdapter(getContext(), patients);
         adapter.setClickListener(CaregiverHomeFragment.this);
         recyclerView.setAdapter(adapter);
 
-        getPatients(caregiver.patientIds, bundle);
 
         patientNames = new ArrayList<>();
-        //System.out.println(patients.get(0).getName());
         for (int x = 0; x < patients.size(); x++) {
             Patient p = patients.get(x);
             System.out.println(p.getName() + "efief");
@@ -138,10 +133,10 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         }
             //RecyclerView recyclerView = view.findViewById(R.id.patientList);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            adapter = new PatientAdapter(getContext(), patientNames);
+            adapter = new PatientAdapter(getContext(), patients);
             adapter.setClickListener(CaregiverHomeFragment.this);
             recyclerView.setAdapter(adapter);
-
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.HORIZONTAL));
 
             Button logoutButton = view.findViewById(R.id.LogoutButton);
             logoutButton.setOnClickListener(v -> {
@@ -191,16 +186,11 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     }
 
 
-    //KtE8cUTutJciGkrF0e1z00YxDaNj2
-
-
-
-
     @Override
     public void onItemClick(View view, int position) {
         PatientInfo frag = new PatientInfo();
         Bundle bundle = new Bundle();
-        bundle.putString("name", adapter.getItem(position));
+        bundle.putString("name", patients.get(position).getName());
         bundle.putString("age", patients.get(position).getAge());
         bundle.putString("notes", patients.get(position).getAge());
         frag.setArguments(bundle);
@@ -228,31 +218,8 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //addFields(view);
 
     }
 
-
-
-    private synchronized void addFields(View view) {
-        while (caregiver == null) {
-            try{
-                wait();
-            }catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-        TextView name = view.findViewById(R.id.user_name);
-        name.setText(caregiver.getName());
-
-        System.out.println(caregiver.getName() + "gello");
-
-        //getPatients(caregiver.getPatientIds());
-        RecyclerView recyclerView = view.findViewById(R.id.patientList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter = new PatientAdapter(view.getContext(), patientNames);
-        adapter.setClickListener(CaregiverHomeFragment.this);
-        recyclerView.setAdapter(adapter);
-    }
 
 }

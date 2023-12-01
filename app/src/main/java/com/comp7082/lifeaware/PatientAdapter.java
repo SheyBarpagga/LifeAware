@@ -13,12 +13,12 @@ import java.util.List;
 public class PatientAdapter extends
         RecyclerView.Adapter<PatientAdapter.ViewHolder> {
 
-    private List<String> data;
+    private List<Patient> data;
     private LayoutInflater inflater;
     private ItemClickListener clickListener;
 
     // data is passed into the constructor
-    PatientAdapter(Context context, List<String> data) {
+    PatientAdapter(Context context, List<Patient> data) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -33,7 +33,8 @@ public class PatientAdapter extends
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.patient_name.setText(data.get(position));
+        holder.patient_name.setText(data.get(position).getName());
+        holder.patient_age.setText(data.get(position).getAge());
     }
 
     // total number of rows
@@ -46,10 +47,12 @@ public class PatientAdapter extends
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView patient_name;
+        TextView patient_age;
 
         ViewHolder(View itemView) {
             super(itemView);
             patient_name = itemView.findViewById(R.id.patient_name_list);
+            patient_age = itemView.findViewById(R.id.patient_age_list);
             itemView.setOnClickListener(this);
         }
 
@@ -60,9 +63,9 @@ public class PatientAdapter extends
     }
 
 
-    String getItem(int id) {
-        return data.get(id);
-    }
+    //String getItem(int id) {
+    //    return data.get(id);
+    //}
 
 
     void setClickListener(ItemClickListener itemClickListener) {

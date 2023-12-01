@@ -91,7 +91,7 @@ public class Caregiver implements Parcelable {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    String patientId = postSnapshot.getValue().toString();
+                    String patientId = postSnapshot.getKey().toString();
                     patientIds.add(patientId);
 
                 }
@@ -148,7 +148,7 @@ public class Caregiver implements Parcelable {
     public void addPatientId(String patientId)
     {
         patientIds.add(patientId);
-        myRef.child("patientIds").child(("" + patientId.length())).setValue(patientId);
+        myRef.child("patientIds").child(patientId).setValue("true");
     }
 
     public void setPatientIds(List<String> patientIds)
