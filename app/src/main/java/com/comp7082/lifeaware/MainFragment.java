@@ -160,18 +160,35 @@ public class MainFragment extends Fragment {
         }
     }
     private void showAssistanceDialog() {
-        new AlertDialog.Builder(getContext())
-                .setTitle(getString(R.string.confirm_request))
-                .setMessage(getString(R.string.confirm_request_detail))
-                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    String caregiverPhoneNumber = "+12222222"; //HAHA Don't Leak my number!
-                    String assistanceMessage = "Patient needs Help!";
-                    sendSMS(caregiverPhoneNumber, assistanceMessage);
-                })
-                .setNegativeButton(getString(R.string.no), (dialog, which) -> {
-                    Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
-                })
-                .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(getString(R.string.confirm_request));
+        builder.setMessage(getString(R.string.confirm_request_detail));
+
+        final boolean[] userResponded = {false};
+
+        builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+            userResponded[0] = true;
+            String caregiverPhoneNumber = "+12222222"; // HAHA Don't Leak my number!
+            String assistanceMessage = "Patient needs Help!";
+            sendSMS(caregiverPhoneNumber, assistanceMessage);
+        });
+
+        builder.setNegativeButton(getString(R.string.no), (dialog, which) -> {
+            userResponded[0] = true;
+            Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        new Handler().postDelayed(() -> {
+            if (!userResponded[0]) { // Check if user hasn't responded
+                dialog.dismiss();
+                String caregiverPhoneNumber = "+12222222"; // HAHA Don't Leak my number!
+                String assistanceMessage = "Patient needs Help!";
+                sendSMS(caregiverPhoneNumber, assistanceMessage);
+            }
+        }, 5000);
     }
 
     @Override
