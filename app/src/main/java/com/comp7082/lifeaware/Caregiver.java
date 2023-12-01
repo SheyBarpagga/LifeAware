@@ -140,6 +140,10 @@ public class Caregiver implements Parcelable {
         this.phoneNumber = phoneNumber;
     }
 
+    public void setFirebasePhone(String phoneNumber)
+    {
+        myRef.child("phone").setValue(phoneNumber);
+    }
     public List<String> getPatientIds()
     {
         return patientIds;
