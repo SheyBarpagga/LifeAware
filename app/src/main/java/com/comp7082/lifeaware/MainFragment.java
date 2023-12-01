@@ -168,8 +168,8 @@ public class MainFragment extends Fragment {
 
         builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             userResponded[0] = true;
-            String caregiverPhoneNumber = "+12222222"; // HAHA Don't Leak my number!
-            String assistanceMessage = "Patient needs Help!";
+            String caregiverPhoneNumber = patient.getCaregiverPhone(); //HAHA Don't Leak my number!
+            String assistanceMessage = patient.getName() + "Patient needs Help!";
             sendSMS(caregiverPhoneNumber, assistanceMessage);
         });
 
