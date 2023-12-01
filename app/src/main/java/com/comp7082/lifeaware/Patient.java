@@ -21,6 +21,8 @@ public class Patient implements Parcelable {
     private String id;
     private String name;
     private String age;
+    private String caregiverPhone;
+    private String caregiverId;
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -32,7 +34,7 @@ public class Patient implements Parcelable {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         myRef = database.getReference(id);
-        CountDownLatch done = new CountDownLatch(3);
+        CountDownLatch done = new CountDownLatch(4);
         myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener()  {
              @Override
              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -69,17 +71,32 @@ public class Patient implements Parcelable {
 
             }
         });
+        myRef.child("caregiver").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String caregiverId = dataSnapshot.getValue(String.class);
+                setCaregiverId(caregiverId);
+                done.countDown();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         try {
             done.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        setCaregiverPhone();
     }
 
     protected Patient(Parcel in) {
         id = in.readString();
         name = in.readString();
         age = in.readString();
+        caregiverPhone = in.readString();
         user = in.readParcelable(FirebaseUser.class.getClassLoader());
     }
 
@@ -100,7 +117,7 @@ public class Patient implements Parcelable {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         myRef = database.getReference(user.getUid());
-        CountDownLatch done = new CountDownLatch(3);
+        CountDownLatch done = new CountDownLatch(4);
         myRef.child("id").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -138,11 +155,25 @@ public class Patient implements Parcelable {
 
             }
         });
+        myRef.child("caregiver").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String caregiverId = dataSnapshot.getValue(String.class);
+                setCaregiverId(caregiverId);
+                done.countDown();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         try {
             done.await();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        setCaregiverPhone();
     }
 
     public Patient() {
@@ -165,12 +196,50 @@ public class Patient implements Parcelable {
         this.name = name;
     }
 
+    public void setCaregiverId(String id) {
+        this.caregiverId = id;
+    }
+    public void setCaregiverPhone(String phone) {
+        this.caregiverPhone = phone;
+    }
+
+    public String getCaregiverPhone() {
+        return caregiverPhone;
+    }
+
     public String getAge() {
         return age;
     }
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public void setCaregiverPhone()
+    {
+        DatabaseReference caregiverRef;
+
+        caregiverRef = database.getReference(caregiverId);
+        CountDownLatch done = new CountDownLatch(1);
+        caregiverRef.child("phone").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String caregiverPhone = dataSnapshot.getValue(String.class);
+                setCaregiverPhone(caregiverPhone);
+                done.countDown();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        try {
+            done.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @Override
@@ -183,6 +252,7 @@ public class Patient implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(name);
         parcel.writeString(age);
+        parcel.writeString(caregiverPhone);
         parcel.writeParcelable(user, i);
     }
 }
