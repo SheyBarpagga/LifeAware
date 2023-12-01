@@ -1,4 +1,6 @@
 package com.comp7082.lifeaware;
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -13,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,7 +134,6 @@ public class MainFragment extends Fragment {
             patient = bundle.getParcelable("patient", Patient.class);
         }
 
-
         TextView name = view.findViewById(R.id.user_name);
         name.setText(patient.getName());
         TextView age = view.findViewById(R.id.user_age);
@@ -164,14 +166,15 @@ public class MainFragment extends Fragment {
                 .setTitle(getString(R.string.confirm_request))
                 .setMessage(getString(R.string.confirm_request_detail))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    String caregiverPhoneNumber = "+12222222"; //HAHA Don't Leak my number!
-                    String assistanceMessage = "Patient needs Help!";
+                    String caregiverPhoneNumber = patient.getCaregiverPhone(); //HAHA Don't Leak my number!
+                    String assistanceMessage = patient.getName() + "Patient needs Help!";
                     sendSMS(caregiverPhoneNumber, assistanceMessage);
                 })
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> {
                     Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
                 })
                 .show();
+        Log.d(TAG, patient.getCaregiverPhone());
     }
 
     @Override
