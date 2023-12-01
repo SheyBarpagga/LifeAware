@@ -44,6 +44,7 @@ public class CaregiverActivity extends AppCompatActivity {
     ArrayList<Patient> patients;
     Bundle bundle;
 Patient pat;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,40 +123,69 @@ Patient pat;
             @Override
             protected void onPostExecute( final Void result ) {
                 System.out.println(cg.getPatientIds());
-//                new AsyncTask<Void, Void, Void>() {
-//
-//                    @Override
-//                    protected Void doInBackground( final Void ... params ) {
-//                        for(String patientID: cg.getPatientIds()) {
-//                            Patient patient = new Patient(patientID);
-//                            patients.add(patient);
-//                        }
-//                        return null;
-//                    }
-//                    @Override
-//                    protected void onPostExecute( final Void result ) {
-//                        for(int x = 1; x <= patients.size(); x++) {
-//                            System.out.println(x);
-//                            bundle.putParcelable("patient" + x, patients.get(x));
-//                        }
-//                        FragmentManager fragmentManager = getSupportFragmentManager();
-//                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                        //Bundle bundle = new Bundle();
-//                        bundle.putParcelable("caregiver", cg);
-//                        //bundle.putParcelable("patients", pat);
-//                        fragment.setArguments(bundle);
-//                        fragmentTransaction.replace(R.id.frame_layout, fragment);
-//                        fragmentTransaction.commit();
-//                    }
-//                }.execute();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                //Bundle bundle = new Bundle();
-                bundle.putParcelable("caregiver", cg);
-                //bundle.putParcelable("patients", pat);
-                fragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-                fragmentTransaction.commit();
+
+                if(cg.getPatientIds() == null || cg.getPatientIds().size() == 0) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    //Bundle bundle = new Bundle();
+                    bundle.putParcelable("caregiver", cg);
+                    //bundle.putParcelable("patients", pat);
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.frame_layout, fragment);
+                    fragmentTransaction.commit();
+                }
+
+                for(String patientID: cg.getPatientIds()) {
+                    new AsyncTask<Void, Void, Void>() {
+                        Patient patient;
+
+                        @Override
+                        protected Void doInBackground( final Void ... params ) {
+                            patient = new Patient(patientID);
+                            //patients.add(patient);
+                            return null;
+                        }
+                        @Override
+                        protected void onPostExecute( final Void result ) {
+                            //for(int x = 1; x <= patients.size(); x++) {
+                                //System.out.println(x);
+                                //System.out.println(patient.getName());
+                                //System.out.println("patient" + count);
+                                bundle.putParcelable("patient" + count, patient);
+                                count++;
+                            //}
+//                            FragmentManager fragmentManager = getSupportFragmentManager();
+//                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                            //Bundle bundle = new Bundle();
+//                            bundle.putParcelable("caregiver", cg);
+//                            //bundle.putParcelable("patients", pat);
+//                            fragment.setArguments(bundle);
+//                            fragmentTransaction.replace(R.id.frame_layout, fragment);
+//                            fragmentTransaction.commit();
+                            if(count == cg.getPatientIds().size()) {
+                                count = 0;
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                //Bundle bundle = new Bundle();
+                                bundle.putParcelable("caregiver", cg);
+                                //bundle.putParcelable("patients", pat);
+                                fragment.setArguments(bundle);
+                                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                                fragmentTransaction.commit();
+                            }
+                        }
+                    }.execute();
+
+                }
+//                count = 0;
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                //Bundle bundle = new Bundle();
+//                bundle.putParcelable("caregiver", cg);
+//                //bundle.putParcelable("patients", pat);
+//                fragment.setArguments(bundle);
+//                fragmentTransaction.replace(R.id.frame_layout, fragment);
+//                fragmentTransaction.commit();
             }
         }.execute();
 

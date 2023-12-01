@@ -1,12 +1,15 @@
 package com.comp7082.lifeaware;
-
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -28,7 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import android.telephony.SmsManager;
+import android.widget.Toast;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -149,78 +153,104 @@ public class MainFragment extends Fragment {
     }
 
     private void confirmAssistanceRequest() {
-
-        DatabaseReference myRef = database.getReference(mAuth.getCurrentUser().getUid());
-
-        myRef.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.getValue(String.class);
-                myRef.child("help").setValue(name);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
-        sendNotificationWithDelay();
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_CODE);
+        } else {
+            showAssistanceDialog();
+        }
+    }
+    private void showAssistanceDialog() {
         new AlertDialog.Builder(getContext())
                 .setTitle(getString(R.string.confirm_request))
                 .setMessage(getString(R.string.confirm_request_detail))
                 .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-                    // User confirmed to send the notification
-                    sendNotification();
+                    String caregiverPhoneNumber = "+12222222"; //HAHA Don't Leak my number!
+                    String assistanceMessage = "Patient needs Help!";
+                    sendSMS(caregiverPhoneNumber, assistanceMessage);
                 })
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> {
-                    // User cancelled the request
                     Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
                 })
                 .show();
     }
 
-    private void sendNotificationWithDelay() {
-        // Set a delay before sending the notification (if necessary)
-        new Handler().postDelayed(this::sendNotification, 5000); // 5 second delay
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showAssistanceDialog();
+            } else {
+                Toast.makeText(getActivity(), "SMS Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
-
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
-            String description = getString(R.string.Help); // Define this in strings.xml
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+    private void sendSMS(String phoneNumber, String message) {
+        try {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+            Toast.makeText(getActivity(), "SMS Sent Successfully", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "SMS Failed to Send", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void sendNotification() {
-        // Show a success message before sending the notification
-        Toast.makeText(getContext(), getString(R.string.notification_sent), Toast.LENGTH_LONG).show();
-
-        CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
-        String description = getString(R.string.Help); // Define this in strings.xml
-        int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-        channel.setDescription(description);
-        notificationManager.createNotificationChannel(channel);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_baseline_health_and_safety_24) // add icon later
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText(getString(R.string.notification_message))
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
-
-builder.setChannelId(CHANNEL_ID);
-        // Ensure the toast has time to display before the notification is sent and the activity state changes.
-        new Handler().postDelayed(() -> {
-            notificationManager.notify(1, builder.build());
-        }, Toast.LENGTH_LONG);
-    }
+//        sendNotificationWithDelay();
+//        new AlertDialog.Builder(getContext())
+//                .setTitle(getString(R.string.confirm_request))
+//                .setMessage(getString(R.string.confirm_request_detail))
+//                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
+//                    // User confirmed to send the notification
+//                    sendNotification();
+//                })
+//                .setNegativeButton(getString(R.string.no), (dialog, which) -> {
+//                    // User cancelled the request
+//                    Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
+//                })
+//                .show();
+//    }
+//
+//    private void sendNotificationWithDelay() {
+//        // Set a delay before sending the notification (if necessary)
+//        new Handler().postDelayed(this::sendNotification, 5000); // 5 second delay
+//    }
+//
+//
+//    private void createNotificationChannel() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
+//            String description = getString(R.string.Help); // Define this in strings.xml
+//            int importance = NotificationManager.IMPORTANCE_HIGH;
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//            channel.setDescription(description);
+//            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//    }
+//
+//    private void sendNotification() {
+//        // Show a success message before sending the notification
+//        Toast.makeText(getContext(), getString(R.string.notification_sent), Toast.LENGTH_LONG).show();
+//
+//        CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
+//        String description = getString(R.string.Help); // Define this in strings.xml
+//        int importance = NotificationManager.IMPORTANCE_HIGH;
+//        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
+//        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//        channel.setDescription(description);
+//        notificationManager.createNotificationChannel(channel);
+//
+//        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+//                .setSmallIcon(R.drawable.ic_baseline_health_and_safety_24) // add icon later
+//                .setContentTitle(getString(R.string.notification_title))
+//                .setContentText(getString(R.string.notification_message))
+//                .setPriority(NotificationCompat.PRIORITY_HIGH);
+//
+//builder.setChannelId(CHANNEL_ID);
+//        // Ensure the toast has time to display before the notification is sent and the activity state changes.
+//        new Handler().postDelayed(() -> {
+//            notificationManager.notify(1, builder.build());
+//        }, Toast.LENGTH_LONG);
+//    }
 }
 

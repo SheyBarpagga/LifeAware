@@ -89,11 +89,11 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             //pat =  bundle.getParcelable("patients", Patient.class);
-            pat = bundle.getParcelable("patient1", Patient.class);
+            pat = bundle.getParcelable("patient0", Patient.class);
         }
-        //System.out.println(pat.getName()+"hello");
+        //System.out.println(pat.getName() + "hello");
 
-        ArrayList<String> test =  new ArrayList<String>();
+        ArrayList<String> test = new ArrayList<String>();
         test.add("test");
         TextView name = view.findViewById(R.id.user_name);
         name.setText(caregiver.getName());
@@ -103,111 +103,92 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
         adapter.setClickListener(CaregiverHomeFragment.this);
         recyclerView.setAdapter(adapter);
 
+        getPatients(caregiver.patientIds, bundle);
 
-        new AsyncTask<Void, Void, Void>() {
+        patientNames = new ArrayList<>();
+        //System.out.println(patients.get(0).getName());
+        for (int x = 0; x < patients.size(); x++) {
+            Patient p = patients.get(x);
+            System.out.println(p.getName() + "efief");
+            patientNames.add(p.getName());
+            database.getReference(p.getId()).child("help").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        String help = postSnapshot.getValue().toString();
+                        Log.d(TAG, "Listening");
+                        if (!help.equals("")) {
+                            CharSequence text = help + "needs help!";
+                            Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                        }
 
-            @Override
-            protected Void doInBackground( final Void ... params ) {
-                // something you know that will take a few seconds
-                //getPatients(caregiver.getPatientIds());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    pat =  bundle.getParcelable("patients", Patient.class);
-                }
-                patients = new ArrayList<Patient>();
-//                Patient patient;
-//                for(String patientID: caregiver.getPatientIds()) {
-//                    patient = new Patient(patientID);
-//                    patients.add(patient);
-//                }
-                return null;
-            }
-            @Override
-            protected void onPostExecute( final Void result ) {
-                patientNames = new ArrayList<String>();
-
-//                patients.add(pat);
-//                    for(Patient patientID: patients) {
-//                        patientNames.add(patientID.getName());
-//                        System.out.println(patientID.getName());
-//                        database.getReference("KtE8cUTutJciGkrF0e1z00YxDaNj2").child("help").addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-//                                    String help = postSnapshot.getValue().toString();
-//                                    Log.d(TAG, "Listening");
-//                                    if(!help.equals("")) {
-//                                        CharSequence text = help + "needs help!";
-//                                        Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
-//                                    }
-//
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
-//                    }
-
-//                RecyclerView recyclerView = view.findViewById(R.id.patientList);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//                adapter = new PatientAdapter(getContext(), patientNames);
-//                adapter.setClickListener(CaregiverHomeFragment.this);
-//                recyclerView.setAdapter(adapter);
-            }
-        }.execute();
-
-
-        Button logoutButton = view.findViewById(R.id.LogoutButton);
-        logoutButton.setOnClickListener(v -> {
-
-            mAuth.signOut();
-        });
-
-        Button addPatient = view.findViewById(R.id.addPatient);
-        addPatient.setOnClickListener(v -> {
-            EditText givenId = view.findViewById(R.id.enter_patient_id);
-            if(givenId.getText().toString().equals("")) {
-                Toast.makeText(getActivity(), "You must enter their ID", Toast.LENGTH_SHORT).show();
-            } else {
-                caregiver.addPatientId(givenId.getText().toString());
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference(givenId.getText().toString());
-                myRef.child("caregiver").setValue(mAuth.getCurrentUser().getUid());
-
-                Toast.makeText(getActivity(), "New patient added", Toast.LENGTH_SHORT).show();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.detach(this).attach(this).commit();
-            }
-        });
-
-
-
-        database.getReference(mAuth.getCurrentUser().getUid()).child("help").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot postSnapshot: snapshot.getChildren()) {
-                    String help = postSnapshot.getValue().toString();
-                    Log.d(TAG, "Listening");
-                    if(!help.equals("")) {
-                        CharSequence text = help + "needs help!";
-                        Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
                     }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
                 }
-            }
+            });
+        }
+        if(patientNames.size() == 0) {
+            TextView t = view.findViewById(R.id.nopatients);
+            CharSequence charSequence = "Add a patient to get started!";
+            t.setText(charSequence);
+        }
+            //RecyclerView recyclerView = view.findViewById(R.id.patientList);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            adapter = new PatientAdapter(getContext(), patientNames);
+            adapter.setClickListener(CaregiverHomeFragment.this);
+            recyclerView.setAdapter(adapter);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+            Button logoutButton = view.findViewById(R.id.LogoutButton);
+            logoutButton.setOnClickListener(v -> {
 
+                mAuth.signOut();
+            });
+
+            Button addPatient = view.findViewById(R.id.addPatient);
+            addPatient.setOnClickListener(v -> {
+                EditText givenId = view.findViewById(R.id.enter_patient_id);
+                if (givenId.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "You must enter their ID", Toast.LENGTH_SHORT).show();
+                } else {
+                    caregiver.addPatientId(givenId.getText().toString());
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference(givenId.getText().toString());
+                    myRef.child("caregiver").setValue(mAuth.getCurrentUser().getUid());
+
+                    Toast.makeText(getActivity(), "New patient added", Toast.LENGTH_SHORT).show();
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.detach(this).attach(this).commit();
+                }
+            });
+
+
+            database.getReference(mAuth.getCurrentUser().getUid()).child("help").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                        String help = postSnapshot.getValue().toString();
+                        Log.d(TAG, "Listening");
+                        if (!help.equals("")) {
+                            CharSequence text = help + "needs help!";
+                            Toast.makeText(getContext().getApplicationContext(), text, Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         return view;
     }
-
 
 
     //KtE8cUTutJciGkrF0e1z00YxDaNj2
@@ -232,12 +213,14 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void getPatients(List<String> patientIDs) {
+    private void getPatients(List<String> patientIDs, Bundle bundle) {
         patients = new ArrayList<Patient>();
         Patient patient;
-            for(String patientID: patientIDs) {
-                patient = new Patient(patientID);
-                patients.add(patient);
+            for(int x = 0; x < patientIDs.size(); x++) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    patient = bundle.getParcelable("patient" + x, Patient.class);
+                    patients.add(patient);
+                }
             }
 
     }
@@ -264,7 +247,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
         System.out.println(caregiver.getName() + "gello");
 
-        getPatients(caregiver.getPatientIds());
+        //getPatients(caregiver.getPatientIds());
         RecyclerView recyclerView = view.findViewById(R.id.patientList);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter = new PatientAdapter(view.getContext(), patientNames);
