@@ -124,6 +124,17 @@ Patient pat;
             protected void onPostExecute( final Void result ) {
                 System.out.println(cg.getPatientIds());
 
+                if(cg.getPatientIds() == null || cg.getPatientIds().size() == 0) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    //Bundle bundle = new Bundle();
+                    bundle.putParcelable("caregiver", cg);
+                    //bundle.putParcelable("patients", pat);
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.frame_layout, fragment);
+                    fragmentTransaction.commit();
+                }
+
                 for(String patientID: cg.getPatientIds()) {
                     new AsyncTask<Void, Void, Void>() {
                         Patient patient;

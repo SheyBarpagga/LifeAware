@@ -131,6 +131,11 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                 }
             });
         }
+        if(patientNames.size() == 0) {
+            TextView t = view.findViewById(R.id.nopatients);
+            CharSequence charSequence = "Add a patient to get started!";
+            t.setText(charSequence);
+        }
             //RecyclerView recyclerView = view.findViewById(R.id.patientList);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             adapter = new PatientAdapter(getContext(), patientNames);
