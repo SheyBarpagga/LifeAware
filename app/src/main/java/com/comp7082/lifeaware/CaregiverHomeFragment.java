@@ -77,6 +77,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_caregiver_home, container, false);
 
@@ -149,7 +150,10 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
                 EditText givenId = view.findViewById(R.id.enter_patient_id);
                 if (givenId.getText().toString().equals("")) {
                     Toast.makeText(getActivity(), "You must enter their ID", Toast.LENGTH_SHORT).show();
+                } else if (givenId.getText().toString().length() != 28) {
+                    Toast.makeText(getActivity(), "The ID is invalid!", Toast.LENGTH_SHORT).show();
                 } else {
+
                     caregiver.addPatientId(givenId.getText().toString());
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
