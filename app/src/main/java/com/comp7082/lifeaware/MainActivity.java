@@ -16,7 +16,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     ActivityMainBinding binding;
     FirebaseAuth.AuthStateListener mAuthListener;
+
 
     Patient patient;
 
@@ -43,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         final int profile = R.id.profile;
         final int home = R.id.home;
+
+
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
 
