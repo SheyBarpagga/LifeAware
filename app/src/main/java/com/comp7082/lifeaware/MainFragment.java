@@ -52,7 +52,7 @@ public class MainFragment extends Fragment {
     private FirebaseDatabase database;
     private Accelerometer accelerometer;
     private Patient patient;
-    private static final String CHANNEL_ID = "assistance_notification_channel";
+
 
 
     public MainFragment() {
@@ -60,7 +60,10 @@ public class MainFragment extends Fragment {
 
 
     public static MainFragment newInstance(String param1, String param2) {
-        return new MainFragment();
+        MainFragment fragment = new MainFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -107,14 +110,11 @@ public class MainFragment extends Fragment {
         accelerometer = new Accelerometer(getContext());
         accelerometer.setListener(new Accelerometer.Listener() {
             @Override
-            public void onTranslation(float tx, float ty, float tz) throws InterruptedException {
-                if(ty < -3.5) {
-                    System.out.println("Hello you are dropped!");
-                    accelerometer.unregister();
+            public void onFallDetected() {
+                getActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "Fall detected!", Toast.LENGTH_SHORT).show();
                     confirmAssistanceRequest();
-                }
-                //Thread.sleep(1000);
-                accelerometer.register();
+                });
             }
         });
 
@@ -123,7 +123,17 @@ public class MainFragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        accelerometer.register();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        accelerometer.unregister();
+    }
     private void confirmAssistanceRequest() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_CODE);
