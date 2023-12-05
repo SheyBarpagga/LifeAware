@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -48,6 +51,7 @@ import java.util.Objects;
 public class MainFragment extends Fragment {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private Accelerometer accelerometer;
@@ -150,9 +154,8 @@ public class MainFragment extends Fragment {
 
         builder.setPositiveButton(getString(R.string.yes), (dialog, which) -> {
             userResponded[0] = true;
-            String caregiverPhoneNumber = patient.getCaregiverPhone(); //HAHA Don't Leak my number!
-            String assistanceMessage = patient.getName() + "Patient needs Help!";
-            sendSMS(caregiverPhoneNumber, assistanceMessage);
+            String caregiverPhoneNumber = patient.getCaregiverPhone();
+            getLocationAndSendSMS(caregiverPhoneNumber);
         });
 
         builder.setNegativeButton(getString(R.string.no), (dialog, which) -> {
@@ -164,15 +167,35 @@ public class MainFragment extends Fragment {
         dialog.show();
 
         new Handler().postDelayed(() -> {
-            if (!userResponded[0]) { // Check if user hasn't responded
+            if (!userResponded[0]) {
                 dialog.dismiss();
-                String caregiverPhoneNumber = "+12222222"; // HAHA Don't Leak my number!
-                String assistanceMessage = "Patient needs Help!";
-                sendSMS(caregiverPhoneNumber, assistanceMessage);
+                String caregiverPhoneNumber = patient.getCaregiverPhone();
+                getLocationAndSendSMS(caregiverPhoneNumber);
             }
         }, 5000);
     }
 
+    private void getLocationAndSendSMS(String phoneNumber) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                        locationManager.removeUpdates(this);
+                        double latitude = location.getLatitude();
+                        double longitude = location.getLongitude();
+                        String assistanceMessage = patient.getName() + " needs help! \nTheir Location: \nhttp://maps.google.com/maps?q=" + latitude + "," + longitude;
+                        sendSMS(phoneNumber, assistanceMessage);
+                    }
+                });
+            } else {
+                Toast.makeText(getActivity(), "GPS not enabled", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -181,6 +204,13 @@ public class MainFragment extends Fragment {
                 showAssistanceDialog();
             } else {
                 Toast.makeText(getActivity(), "SMS Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocationAndSendSMS(patient.getCaregiverPhone());
+            } else {
+                Toast.makeText(getActivity(), "Location Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -193,63 +223,5 @@ public class MainFragment extends Fragment {
             Toast.makeText(getActivity(), "SMS Failed to Send", Toast.LENGTH_SHORT).show();
         }
     }
-
-//        sendNotificationWithDelay();
-//        new AlertDialog.Builder(getContext())
-//                .setTitle(getString(R.string.confirm_request))
-//                .setMessage(getString(R.string.confirm_request_detail))
-//                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
-//                    // User confirmed to send the notification
-//                    sendNotification();
-//                })
-//                .setNegativeButton(getString(R.string.no), (dialog, which) -> {
-//                    // User cancelled the request
-//                    Toast.makeText(getContext(), getString(R.string.assistance_cancelled), Toast.LENGTH_SHORT).show();
-//                })
-//                .show();
-//    }
-//
-//    private void sendNotificationWithDelay() {
-//        // Set a delay before sending the notification (if necessary)
-//        new Handler().postDelayed(this::sendNotification, 5000); // 5 second delay
-//    }
-//
-//
-//    private void createNotificationChannel() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
-//            String description = getString(R.string.Help); // Define this in strings.xml
-//            int importance = NotificationManager.IMPORTANCE_HIGH;
-//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-//            channel.setDescription(description);
-//            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
-//            notificationManager.createNotificationChannel(channel);
-//        }
-//    }
-//
-//    private void sendNotification() {
-//        // Show a success message before sending the notification
-//        Toast.makeText(getContext(), getString(R.string.notification_sent), Toast.LENGTH_LONG).show();
-//
-//        CharSequence name = getString(R.string.PatientName); // Define this in strings.xml
-//        String description = getString(R.string.Help); // Define this in strings.xml
-//        int importance = NotificationManager.IMPORTANCE_HIGH;
-//        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getContext().NOTIFICATION_SERVICE);
-//        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-//        channel.setDescription(description);
-//        notificationManager.createNotificationChannel(channel);
-//
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
-//                .setSmallIcon(R.drawable.ic_baseline_health_and_safety_24) // add icon later
-//                .setContentTitle(getString(R.string.notification_title))
-//                .setContentText(getString(R.string.notification_message))
-//                .setPriority(NotificationCompat.PRIORITY_HIGH);
-//
-//builder.setChannelId(CHANNEL_ID);
-//        // Ensure the toast has time to display before the notification is sent and the activity state changes.
-//        new Handler().postDelayed(() -> {
-//            notificationManager.notify(1, builder.build());
-//        }, Toast.LENGTH_LONG);
-//    }
 }
 
