@@ -23,7 +23,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Run unit tests
-      run: SheyBarpagga/LifeAware/app/src/test/java/com/comp7082/lifeaware
+      run: ./gradlew test connectedAndroidTest
     - name: run lint
       run: ./gradlew lint
     - name: Upload APK
