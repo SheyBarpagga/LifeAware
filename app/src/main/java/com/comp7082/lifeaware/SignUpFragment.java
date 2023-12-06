@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.comp7082.lifeaware.controllers.CaregiverActivity;
 import com.comp7082.lifeaware.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,9 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup;
-
-import java.util.Arrays;
-import java.util.concurrent.Executor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,7 +98,7 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        inputValidation = new InputValidation(this.getActivity());
+        inputValidation = new InputValidation();
 
         View view;
         Button signUpButton;

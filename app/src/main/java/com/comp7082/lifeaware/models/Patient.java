@@ -1,6 +1,5 @@
-package com.comp7082.lifeaware;
+package com.comp7082.lifeaware.models;
 
-import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -14,7 +13,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.util.concurrent.CountDownLatch;
 
 public class Patient implements Parcelable {

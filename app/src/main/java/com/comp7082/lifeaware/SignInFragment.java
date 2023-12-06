@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.comp7082.lifeaware.controllers.CaregiverActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -87,7 +88,7 @@ public class SignInFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        inputValidation = new InputValidation(this.getActivity());
+        inputValidation = new InputValidation();
 
         view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         signInButton = (Button) view.findViewById(R.id.buttonSignIn);

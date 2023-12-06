@@ -44,8 +44,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:hint="@string/Email"
-        android:importantForAutofill="no"
         android:id="@+id/emailAddressText"
         android:layout_width="379dp"
         android:layout_height="49dp"
@@ -54,6 +52,8 @@
         android:layout_marginBottom="544dp"
         android:background="@drawable/gray_border"
         android:ems="10"
+        android:hint="@string/Email"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         android:text="@string/Email"
@@ -61,7 +61,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/buttonSignUp"
@@ -101,5 +102,6 @@
         android:background="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_close_24" />
+        app:srcCompat="@drawable/baseline_close_24"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,6 @@ import static android.content.ContentValues.TAG;
 //import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -26,6 +25,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.comp7082.lifeaware.models.Caregiver;
+import com.comp7082.lifeaware.models.Patient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,9 +36,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,7 +88,7 @@ public class CaregiverHomeFragment extends Fragment implements PatientAdapter.It
 
         ArrayList<String> test = new ArrayList<String>();
         test.add("test");
-        getPatients(caregiver.patientIds, bundle);
+        getPatients(caregiver.getPatientIds(), bundle);
 
         TextView name = view.findViewById(R.id.user_name);
         name.setText(caregiver.getName());

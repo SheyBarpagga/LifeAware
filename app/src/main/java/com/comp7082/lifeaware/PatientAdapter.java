@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.comp7082.lifeaware.models.Patient;
+
 import java.util.List;
 
 public class PatientAdapter extends

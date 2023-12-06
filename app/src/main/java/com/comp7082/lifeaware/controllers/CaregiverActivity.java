@@ -1,9 +1,7 @@
-package com.comp7082.lifeaware;
+package com.comp7082.lifeaware.controllers;
 
 import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
-
-import static androidx.test.InstrumentationRegistry.getContext;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +15,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.comp7082.lifeaware.CaregiverHomeFragment;
+import com.comp7082.lifeaware.CaregiverProfileFragment;
+import com.comp7082.lifeaware.R;
+import com.comp7082.lifeaware.SignUpActivity;
 import com.comp7082.lifeaware.databinding.ActivityMainBinding;
+import com.comp7082.lifeaware.models.Caregiver;
+import com.comp7082.lifeaware.models.Patient;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +46,7 @@ public class CaregiverActivity extends AppCompatActivity {
     Caregiver cg;
     ArrayList<Patient> patients;
     Bundle bundle;
-Patient pat;
+    Patient pat;
     int count = 0;
 
     @Override
@@ -147,28 +150,13 @@ Patient pat;
                         }
                         @Override
                         protected void onPostExecute( final Void result ) {
-                            //for(int x = 1; x <= patients.size(); x++) {
-                                //System.out.println(x);
-                                //System.out.println(patient.getName());
-                                //System.out.println("patient" + count);
-                                bundle.putParcelable("patient" + count, patient);
-                                count++;
-                            //}
-//                            FragmentManager fragmentManager = getSupportFragmentManager();
-//                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                            //Bundle bundle = new Bundle();
-//                            bundle.putParcelable("caregiver", cg);
-//                            //bundle.putParcelable("patients", pat);
-//                            fragment.setArguments(bundle);
-//                            fragmentTransaction.replace(R.id.frame_layout, fragment);
-//                            fragmentTransaction.commit();
+                            bundle.putParcelable("patient" + count, patient);
+                            count++;
                             if(count == cg.getPatientIds().size()) {
                                 count = 0;
                                 FragmentManager fragmentManager = getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                //Bundle bundle = new Bundle();
                                 bundle.putParcelable("caregiver", cg);
-                                //bundle.putParcelable("patients", pat);
                                 fragment.setArguments(bundle);
                                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                                 fragmentTransaction.commit();
@@ -177,15 +165,6 @@ Patient pat;
                     }.execute();
 
                 }
-//                count = 0;
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                //Bundle bundle = new Bundle();
-//                bundle.putParcelable("caregiver", cg);
-//                //bundle.putParcelable("patients", pat);
-//                fragment.setArguments(bundle);
-//                fragmentTransaction.replace(R.id.frame_layout, fragment);
-//                fragmentTransaction.commit();
             }
         }.execute();
 

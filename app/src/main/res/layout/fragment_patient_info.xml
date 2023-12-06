@@ -5,7 +5,7 @@
     android:id="@+id/contraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".controllers.MainActivity">
 
     <View
         android:id="@+id/view"
@@ -29,7 +29,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintTop_toTopOf="@+id/view"
+        tools:ignore="TextSizeCheck" />
 
 
     <ImageView
@@ -41,7 +42,8 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/patient_info_title"
-        app:srcCompat="@drawable/circle" />
+        app:srcCompat="@drawable/circle"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/patient_info_name"
@@ -55,7 +57,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:ignore="TextSizeCheck" />
 
     <Button
         android:id="@+id/LogoutButton"
@@ -98,7 +101,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patient_info_age" />
+        app:layout_constraintTop_toBottomOf="@+id/patient_info_age"
+        tools:ignore="TextSizeCheck" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
