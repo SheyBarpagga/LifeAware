@@ -88,7 +88,7 @@ public class SignInFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        inputValidation = new InputValidation(this.getActivity());
+        inputValidation = new InputValidation();
 
         view = inflater.inflate(R.layout.fragment_sign_in, container, false);
         signInButton = (Button) view.findViewById(R.id.buttonSignIn);
