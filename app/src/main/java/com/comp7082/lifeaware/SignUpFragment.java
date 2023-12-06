@@ -98,7 +98,7 @@ public class SignUpFragment extends Fragment {
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
-        inputValidation = new InputValidation(this.getActivity());
+        inputValidation = new InputValidation();
 
         View view;
         Button signUpButton;
