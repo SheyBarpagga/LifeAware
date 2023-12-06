@@ -173,13 +173,15 @@
             android:id="@+id/buttonCaregiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Caregiver" />
+            android:text="@string/Caregiver"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <com.nex3z.togglebuttongroup.button.LabelToggle
             android:id="@+id/Patient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Patient" />
+            android:text="Patient"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <!--...-->
 
@@ -212,13 +214,17 @@
         android:background="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_close_24" />
+        app:srcCompat="@drawable/baseline_close_24"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp">
+        app:layout_constraintBottom_toTopOf="@+id/SignUpText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </com.google.android.material.textfield.TextInputLayout>
 
