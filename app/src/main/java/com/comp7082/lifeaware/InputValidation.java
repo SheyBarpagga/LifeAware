@@ -53,7 +53,7 @@ public class InputValidation
 
     public boolean validEmail(String email)
     {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        return androidx.core.util.PatternsCompat.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public boolean inputTextAgeValid(EditText textInputEditText,
