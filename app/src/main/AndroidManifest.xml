@@ -31,7 +31,7 @@
             android:name=".SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".controllers.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".CaregiverActivity"
+            android:name=".controllers.CaregiverActivity"
             android:exported="false" />
     </application>
 

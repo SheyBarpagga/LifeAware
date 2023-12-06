@@ -20,6 +20,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.comp7082.lifeaware.controllers.MainActivity;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -29,8 +31,6 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-// WARNING: Espresso Test Recorder was paused during recording.
-// The generated test may be missing actions which might lead to unexpected behavior.
 public class TestProfileAndSignOut {
 
     @Rule
@@ -38,12 +38,8 @@ public class TestProfileAndSignOut {
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void testProfileAndSignOut() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void testProfileAndSignOut() throws InterruptedException {
+        Thread.sleep(1000);
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.profile), withContentDescription("Profile"),
                         childAtPosition(
@@ -54,18 +50,24 @@ public class TestProfileAndSignOut {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction materialButton = onView(
-                allOf(withId(R.id.addPatient), withText("Add Patient"),
-                        childAtPosition(
-                                allOf(withId(R.id.contraint_layout),
-                                        childAtPosition(
-                                                withId(R.id.frame_layout),
-                                                0)),
-                                8),
-                        isDisplayed()));
-        materialButton.perform(click());
-
         ViewInteraction bottomNavigationItemView2 = onView(
+                allOf(withId(R.id.profile), withContentDescription("Profile"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.bottomNavigationView),
+                                        0),
+                                1),
+                        isDisplayed()));
+        bottomNavigationItemView2.perform(click());
+
+        ViewInteraction button = onView(
+                allOf(withId(R.id.patinetID), withText("PATIENT ID"),
+                        withParent(allOf(withId(R.id.contraint_layout),
+                                withParent(withId(R.id.frame_layout)))),
+                        isDisplayed()));
+        button.check(matches(isDisplayed()));
+
+        ViewInteraction bottomNavigationItemView3 = onView(
                 allOf(withId(R.id.home), withContentDescription("Home"),
                         childAtPosition(
                                 childAtPosition(
@@ -73,33 +75,31 @@ public class TestProfileAndSignOut {
                                         0),
                                 0),
                         isDisplayed()));
-        bottomNavigationItemView2.perform(click());
+        bottomNavigationItemView3.perform(click());
+        Thread.sleep(1000);
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.addPatient), withText("ADD PATIENT"),
+                        withParent(allOf(withId(R.id.contraint_layout),
+                                withParent(withId(R.id.frame_layout)))),
+                        isDisplayed()));
+        button2.check(matches(isDisplayed()));
 
-        ViewInteraction materialButton2 = onView(
+        ViewInteraction materialButton = onView(
                 allOf(withId(R.id.LogoutButton), withText("Log Out"),
                         childAtPosition(
                                 allOf(withId(R.id.contraint_layout),
                                         childAtPosition(
                                                 withId(R.id.frame_layout),
                                                 0)),
-                                6),
+                                4),
                         isDisplayed()));
-        materialButton2.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.SignUpText), withText("Sign Up"),
+        materialButton.perform(click());
+        Thread.sleep(1000);
+        ViewInteraction button3 = onView(
+                allOf(withId(R.id.buttonSignUp), withText("SIGN UP"),
                         withParent(withParent(withId(R.id.frame_layout))),
                         isDisplayed()));
-        textView.check(matches(withText("Sign Up")));
+        button3.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(

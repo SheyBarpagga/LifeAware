@@ -1,11 +1,17 @@
-package com.comp7082.lifeaware;
+package com.comp7082.lifeaware.controllers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.comp7082.lifeaware.MainFragment;
+import com.comp7082.lifeaware.ProfileFragment;
+import com.comp7082.lifeaware.R;
+import com.comp7082.lifeaware.SignUpActivity;
 import com.comp7082.lifeaware.databinding.ActivityMainBinding;
+import com.comp7082.lifeaware.models.Patient;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,16 +22,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;

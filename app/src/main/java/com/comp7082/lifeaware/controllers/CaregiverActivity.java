@@ -1,9 +1,7 @@
-package com.comp7082.lifeaware;
+package com.comp7082.lifeaware.controllers;
 
 import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
-
-import static androidx.test.InstrumentationRegistry.getContext;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +15,16 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.comp7082.lifeaware.CaregiverHomeFragment;
+import com.comp7082.lifeaware.CaregiverProfileFragment;
+import com.comp7082.lifeaware.R;
+import com.comp7082.lifeaware.SignUpActivity;
 import com.comp7082.lifeaware.databinding.ActivityMainBinding;
+import com.comp7082.lifeaware.models.Caregiver;
+import com.comp7082.lifeaware.models.Patient;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
