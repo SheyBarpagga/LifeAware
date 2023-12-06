@@ -46,7 +46,7 @@ public class CaregiverActivity extends AppCompatActivity {
     Caregiver cg;
     ArrayList<Patient> patients;
     Bundle bundle;
-Patient pat;
+    Patient pat;
     int count = 0;
 
     @Override
@@ -150,28 +150,13 @@ Patient pat;
                         }
                         @Override
                         protected void onPostExecute( final Void result ) {
-                            //for(int x = 1; x <= patients.size(); x++) {
-                                //System.out.println(x);
-                                //System.out.println(patient.getName());
-                                //System.out.println("patient" + count);
-                                bundle.putParcelable("patient" + count, patient);
-                                count++;
-                            //}
-//                            FragmentManager fragmentManager = getSupportFragmentManager();
-//                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                            //Bundle bundle = new Bundle();
-//                            bundle.putParcelable("caregiver", cg);
-//                            //bundle.putParcelable("patients", pat);
-//                            fragment.setArguments(bundle);
-//                            fragmentTransaction.replace(R.id.frame_layout, fragment);
-//                            fragmentTransaction.commit();
+                            bundle.putParcelable("patient" + count, patient);
+                            count++;
                             if(count == cg.getPatientIds().size()) {
                                 count = 0;
                                 FragmentManager fragmentManager = getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                //Bundle bundle = new Bundle();
                                 bundle.putParcelable("caregiver", cg);
-                                //bundle.putParcelable("patients", pat);
                                 fragment.setArguments(bundle);
                                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                                 fragmentTransaction.commit();
@@ -180,15 +165,6 @@ Patient pat;
                     }.execute();
 
                 }
-//                count = 0;
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                //Bundle bundle = new Bundle();
-//                bundle.putParcelable("caregiver", cg);
-//                //bundle.putParcelable("patients", pat);
-//                fragment.setArguments(bundle);
-//                fragmentTransaction.replace(R.id.frame_layout, fragment);
-//                fragmentTransaction.commit();
             }
         }.execute();
 
