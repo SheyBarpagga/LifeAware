@@ -23,7 +23,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Run unit tests
-      run: ./app/java/com/comp7082/lifeaware/ExampleUnitTest.java
+      run: /app/java/com/comp7082/lifeaware/ExampleUnitTest.java
     - name: run lint
       run: ./gradlew lint
     - name: Upload APK
